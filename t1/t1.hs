@@ -38,7 +38,7 @@ htmlListItems2 lis = map (\x -> "<LI>" ++ x ++ "</LI>") lis
 -- Recebe uma string e retorna outra retirando todas as vogais.
 -- Sem função anônima
 semVogais :: String -> String
-semVogais str = filter isVowel str
+semVogais str = filter (not . isVowel) str
 
 -- Com função anônima
 semVogais2 :: String -> String
