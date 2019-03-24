@@ -123,11 +123,14 @@ betterEncodeName name = name
 
 -- 12.
 -- Dada uma lista de strings, aquelas com mais de 10 caracteres são truncadas, e aquelas com menos são completadas com '.'
+-- Sem função anônima
 func :: [String] -> [String]
-func lis = lis
-
+func lis = map funcAux lis
 
 funcAux :: String -> String
-funcAux str = if length str < 10 then funcAux (str ++ ".") else str
+funcAux str = if length str > 10 then take 10 str else funcAux (str ++ "..........")
 
--- Teste
+-- Com função anônima
+func2 :: [String] -> [String]
+func2 lis = map (\x -> take 10 (x ++ "..........")) lis
+
