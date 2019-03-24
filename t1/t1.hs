@@ -45,21 +45,20 @@ semVogais2 :: String -> String
 semVogais2 str = filter (\x -> not (x == 'A' || x == 'I' || x == 'U' || x == 'E' || x == 'O' || x == 'a' || x == 'i' || x == 'u' || x == 'e' || x == 'o')) str
 
 -- 5.
--- Recebe uma string que possivelmente contém espaços, substituindo todos os caracteres diferents de espaço por "-"
+-- Recebe uma string que possivelmente contém espaços, substituindo todos os caracteres diferentes de espaço por '-''
 -- Sem função anônima
 codifica :: String -> String
 codifica str = map changeChar str
 
--- Troca um caracter que não é espaço por "-"
+-- Troca um caracter que não é espaço por '-''
 changeChar :: Char -> Char
 changeChar char
     | char /= ' ' = '-'
     | otherwise = ' '
 
 -- Com função anônima
--- Arrumar
 codifica2 :: String -> String
-codifica2 str = map (\x -> '-') str
+codifica2 str = map (\x -> if x /= ' ' then '-' else ' ') str
 
 -- 6.
 -- Função que retorna o primeiro nome de uma pessoa.
