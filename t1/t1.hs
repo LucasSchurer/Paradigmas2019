@@ -89,7 +89,6 @@ isIntAux2 lis = if filter (\x -> x == False) lis /= [] then False else True
 
 -- 8.
 -- Função que retorna o último nome de uma pessoa.
--- remove espaços filter (\x -> x /= ' ') 
 lastName :: String -> String
 lastName last_name = last (words last_name)
 
@@ -99,7 +98,6 @@ userName :: String -> String
 userName name = map toLower ([head (firstName name)] ++ lastName name)
 
 -- 10.
--- Arrumar a questão do u = 00
 -- Substitui vogais em uma string, seguindo as regras: a = 4, e = 3, i = 1, o = 0, u = 00.
 encodeName :: String -> String
 encodeName name = map encodeNameAux name
@@ -108,15 +106,20 @@ encodeNameAux :: Char -> Char
 encodeNameAux char
     | char == 'a' = '4'
     | char == 'e' = '3'
-    | char == 'i' = '1'
-    | char == 'o' = '0'
+    | char == 'i' = '2'
+    | char == 'o' = '1'
     | char == 'u' = '0'
+    | char == 'A' = '4'
+    | char == 'E' = '3'
+    | char == 'I' = '2'
+    | char == 'O' = '1'
+    | char == 'U' = '0'
     | otherwise = char
 
 -- 11.
 -- Substitui vogais em uma string, seguindo as regras: a = 4, e = 3, i = 1, o = 0, u = 00.
 betterEncodeName :: String -> String
-betterEncodeName name = encodeName (map toLower name)
+betterEncodeName name = name
 
 -- 12.
 -- Dada uma lista de strings, aquelas com mais de 10 caracteres são truncadas, e aquelas com menos são completadas com '.'
