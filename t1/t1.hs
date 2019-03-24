@@ -126,3 +126,5 @@ func lis = lis
 
 funcAux :: String -> String
 funcAux str = if length str < 10 then funcAux (str ++ ".") else str
+
+-- Teste
