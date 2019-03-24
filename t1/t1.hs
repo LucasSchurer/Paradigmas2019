@@ -89,8 +89,9 @@ isIntAux2 lis = if filter (\x -> x == False) lis /= [] then False else True
 
 -- 8.
 -- Função que retorna o último nome de uma pessoa.
+-- remove espaços filter (\x -> x /= ' ') 
 lastName :: String -> String
-lastName last_name = filter (\x -> x /= ' ') (dropWhile (/= ' ') last_name)
+lastName last_name = last (words last_name)
 
 -- 9.
 -- Retorna um nome de usuário formado pela primeira letra do nome do usuário + o sobrenome, tudo em minúsculas.
