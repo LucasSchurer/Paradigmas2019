@@ -119,7 +119,25 @@ encodeNameAux char
 -- 11.
 -- Substitui vogais em uma string, seguindo as regras: a = 4, e = 3, i = 1, o = 0, u = 00.
 betterEncodeName :: String -> String
-betterEncodeName name = name
+betterEncodeName name = concat (map betterEncodeNameAux (splitString name))
+
+-- Separa a string em uma lista de strings.
+splitString :: String -> [String]
+splitString str = map (\x -> [x]) str
+
+betterEncodeNameAux :: String -> String
+betterEncodeNameAux str
+    | str == "a" = "4"
+    | str == "e" = "3"
+    | str == "i" = "1"
+    | str == "o" = "0"
+    | str == "u" = "00"
+    | str == "A" = "4"
+    | str == "E" = "3"
+    | str == "I" = "1"
+    | str == "O" = "0"
+    | str == "U" = "00"
+    | otherwise = str
 
 -- 12.
 -- Dada uma lista de strings, aquelas com mais de 10 caracteres são truncadas, e aquelas com menos são completadas com '.'
