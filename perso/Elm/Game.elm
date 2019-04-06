@@ -1,7 +1,10 @@
 import Browser
 import Browser.Events
 import Json.Decode
-import Html exposing (div)
+import Html
+import Svg exposing (svg, circle)
+import Svg.Attributes exposing (cx, cy, r, width, height, viewBox)
+
 
 -- Main
 main = 
@@ -15,11 +18,14 @@ main =
 -- Model
 
 type alias Player =    
-    Int
+    { x : Float
+    , y : Float
+    , r : Float
+    }
 
 init : () -> ( Player, Cmd Msg )
 init _ =
-    ( 0
+    ( Player 20 20 10
     , Cmd.none 
     )
 
@@ -74,6 +80,17 @@ subscriptions _ =
 -- View
 
 view : Player -> Html.Html Msg
-view _ = 
-    div [] []
+view player = 
+    drawPlayer player
     
+
+drawPlayer : Player -> Html.Html Msg
+drawPlayer player =
+    svg []
+        [ circle 
+            [ cx ( String.fromFloat player.x ) 
+            , cy ( String.fromFloat player.y )
+            , r  ( String.fromFloat player.r )  
+            ]
+            []
+        ]
