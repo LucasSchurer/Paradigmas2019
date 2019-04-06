@@ -18,9 +18,9 @@ main =
 -- Model
 
 type alias Player =    
-    { x : Float
-    , y : Float
-    , r : Float
+    { x : Int
+    , y : Int
+    , r : Int
     }
 
 init : () -> ( Player, Cmd Msg )
@@ -44,10 +44,30 @@ type Msg
 update : Msg -> Player -> ( Player, Cmd Msg )
 update msg player = 
     case msg of
-        KeyPressed _ ->
-            ( player
+        KeyPressed Left ->
+            ( { player | x = player.x - 10 }
             , Cmd.none
             )
+        
+        KeyPressed Up ->
+            ( { player | y = player.y - 10 }
+            , Cmd.none
+            )
+
+        KeyPressed Right ->
+            ( { player | x = player.x + 10 }
+            , Cmd.none
+            )
+
+        KeyPressed Down ->
+            ( { player | y = player.y + 10 }
+            , Cmd.none
+            )
+
+        KeyPressed None ->
+            ( player
+            , Cmd.none
+            )    
 
 -- Subscriptions
 
@@ -86,11 +106,14 @@ view player =
 
 drawPlayer : Player -> Html.Html Msg
 drawPlayer player =
-    svg []
+    svg [ width "800"
+        , height "800"
+        , viewBox "0 0 800 800"
+        ]
         [ circle 
-            [ cx ( String.fromFloat player.x ) 
-            , cy ( String.fromFloat player.y )
-            , r  ( String.fromFloat player.r )  
+            [ cx ( String.fromInt player.x ) 
+            , cy ( String.fromInt player.y )
+            , r  ( String.fromInt player.r )  
             ]
             []
         ]
