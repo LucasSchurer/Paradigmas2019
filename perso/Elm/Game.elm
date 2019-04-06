@@ -24,15 +24,28 @@ type alias Input =
 
 -- Model
 
+type alias Player = 
+    { x     : Float
+    , y     : Float
+    , speed : Float
+    }
+
 type alias Model = 
-    { gameWidth : Int
-    , gameHeight : Int
+    { gameWidth     : Int
+    , gameHeight    : Int
+    , snake         : Player
     }
 
 
 init : Model
 init = 
-    Model 800 400
+    let 
+      gameWidth = 800
+      gameHeight = 400
+      snake = Player 5.0 5.0 1.0
+    
+    in
+    Model gameWidth gameHeight snake
     
 
 
