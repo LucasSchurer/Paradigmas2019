@@ -1,9 +1,8 @@
 import Browser
 import Browser.Events
 import Json.Decode
-import Html
-import Svg exposing (svg, circle)
-import Svg.Attributes exposing (cx, cy, r, width, height, viewBox)
+import Svg
+import Svg.Attributes
 
 
 -- Main
@@ -45,24 +44,44 @@ update : Msg -> Player -> ( Player, Cmd Msg )
 update msg player = 
     case msg of
         KeyPressed Left ->
-            ( { player | x = player.x - 10 }
-            , Cmd.none
-            )
+            if ( player.x - 10 < 20 ) then 
+                ( player
+                , Cmd.none 
+                )
+            else 
+                ( { player | x = player.x - 10 }
+                , Cmd.none
+                )
         
         KeyPressed Up ->
-            ( { player | y = player.y - 10 }
-            , Cmd.none
-            )
+            if ( player.y - 10 < 20 ) then 
+                ( player
+                , Cmd.none 
+                )
+            else 
+                ( { player | y = player.y - 10 }
+                , Cmd.none
+                )
 
         KeyPressed Right ->
-            ( { player | x = player.x + 10 }
-            , Cmd.none
-            )
+            if ( player.x + 10 > 400 ) then 
+                ( player
+                , Cmd.none 
+                )
+            else 
+                ( { player | x = player.x + 10 }
+                , Cmd.none
+                )
 
         KeyPressed Down ->
-            ( { player | y = player.y + 10 }
-            , Cmd.none
-            )
+            if ( player.y + 10 > 600 ) then 
+                ( player
+                , Cmd.none 
+                )
+            else 
+                ( { player | y = player.y + 10 }
+                , Cmd.none
+                )
 
         KeyPressed None ->
             ( player
@@ -95,25 +114,42 @@ toDirection string =
 
 subscriptions : Player -> Sub Msg
 subscriptions _ =
-    Browser.Events.onKeyDown keyDecoder
+    Sub.batch 
+        [ Browser.Events.onKeyDown keyDecoder
+        ]
 
 -- View
 
-view : Player -> Html.Html Msg
+view : Player -> Svg.Svg Msg
 view player = 
-    drawPlayer player
+    Svg.svg 
+        [ Svg.Attributes.width "800"
+        , Svg.Attributes.height "800"
+        , Svg.Attributes.viewBox "0 0 800 800"
+        ]
+        [ drawBackground
+        , drawPlayer player
+        ]    
+        
     
 
-drawPlayer : Player -> Html.Html Msg
+drawPlayer : Player -> Svg.Svg Msg
 drawPlayer player =
-    svg [ width "800"
-        , height "800"
-        , viewBox "0 0 800 800"
+     Svg.circle 
+        [ Svg.Attributes.cx ( String.fromInt player.x ) 
+        , Svg.Attributes.cy ( String.fromInt player.y )
+        , Svg.Attributes.r  ( String.fromInt player.r )
+        , Svg.Attributes.fill "red"   
         ]
-        [ circle 
-            [ cx ( String.fromInt player.x ) 
-            , cy ( String.fromInt player.y )
-            , r  ( String.fromInt player.r )  
-            ]
-            []
-        ]
+        []
+
+drawBackground : Svg.Svg Msg
+drawBackground = 
+    Svg.rect
+        [ Svg.Attributes.x "10" 
+        , Svg.Attributes.y "10"
+        , Svg.Attributes.rx "10"
+        , Svg.Attributes.ry "10"
+        , Svg.Attributes.width "400"
+        , Svg.Attributes.height "600"
+        ] []
