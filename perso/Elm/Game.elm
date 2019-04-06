@@ -25,12 +25,11 @@ type Direction
 type alias Model = 
     { x   : Int
     , y   : Int
-    , mov : Direction
     }
 
 init : () -> (Model, Cmd Msg)
 init _ =
-    ( Model 0 0 Other
+    ( Model 0 0
     , Cmd.none)
 
 -- Update
@@ -46,16 +45,16 @@ update msg model =
       Moving direction ->
         case direction of 
           Left ->
-            (Model (model.x - 5) model.y Other, Cmd.none)
+            ( { model | x = model.x - 10 }, Cmd.none)
 
           Up -> 
-            (Model model.x (model.y + 5) Other, Cmd.none)
+            ( { model | y = model.y + 10 }, Cmd.none)
 
           Right -> 
-            (Model (model.x +5) model.y Other, Cmd.none)
+            ( { model | x = model.x + 10 }, Cmd.none)
 
           Down -> 
-            (Model model.x (model.y - 5) Other, Cmd.none)
+            ( { model | y = model.y - 10 }, Cmd.none)
 
           Other ->
             (model, Cmd.none)
