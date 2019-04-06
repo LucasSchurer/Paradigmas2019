@@ -5,7 +5,7 @@ import Html.Events
 
 
 main = 
-    Browser.sandbox { init = init, update = update, view = view}
+    Browser.sandbox { init = defaultGame, update = updateGame, view = view}
 
 -- Inputs 
 
@@ -24,47 +24,58 @@ type alias Input =
 
 -- Model
 
-type alias Player = 
-    { x     : Float
-    , y     : Float
-    , speed : Float
-    }
+type State = Play | Pause
 
-type alias Model = 
+type alias Background = 
     { gameWidth     : Int
     , gameHeight    : Int
+    }
+
+type alias Player = 
+    { x         : Float
+    , y         : Float
+    , speed     : Float
+    , direction : Int
+    }
+
+type alias Point =
+    { x : Float
+    , y : Float
+    }
+
+type alias Game = 
+    { state         : State
+    , background    : Background
     , snake         : Player
+    , fruit         : Point
+    , score         : Int
     }
 
 
-init : Model
-init = 
+defaultGame : Game
+defaultGame = 
     let 
-      gameWidth = 800
-      gameHeight = 400
-      snake = Player 5.0 5.0 1.0
+      state = Play
+      background = Background 800 600
+      snake = Player 5.0 5.0 1.0 0
+      fruit = Point 10.0 10.0
+      score = 0
     
     in
-    Model gameWidth gameHeight snake
+    Game state background snake fruit score
     
 
 
 -- Update
 
-type Msg = Play | Pause
-
-update : Msg -> Model -> Model
-update msg model = 
-    case msg of 
-        Play ->
-          model
-
-        Pause ->
-          model
-
-
+updateGame : Input -> Game -> Game
+updateGame input game = 
+    case input of 
+        space ->
+          game
+        
 -- View
 
-view : Model -> Html.Html Msg
-view model = 
+view : Game -> Html Input
+view game = 
         img [ src "src/img1.png", width 1000, height 800] []
