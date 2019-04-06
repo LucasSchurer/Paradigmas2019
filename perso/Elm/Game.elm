@@ -1,81 +1,57 @@
 import Browser
 import Html exposing (..)
-import Html.Attributes exposing (src, width, height)
+import Html.Attributes
 import Html.Events
-
+import Svg exposing (..)
+import Svg.Attributes exposing (..)
+import Keyboard
 
 main = 
-    Browser.sandbox { init = defaultGame, update = updateGame, view = view}
-
--- Inputs 
-
-type alias Movement =
-    { left  : Bool
-    , up    : Bool
-    , right : Bool
-    , down  : Bool
-    }
-
-type alias Input =
-    { space : Bool
-    , movement : Movement
-    }
-
-
+    Browser.element
+      { init = init
+      , view = view
+      , update = update
+      , subscriptions = subscriptions
+      }
+    
 -- Model
 
-type State = Play | Pause
-
-type alias Background = 
-    { gameWidth     : Int
-    , gameHeight    : Int
+type alias Model = 
+    { x   : Int
+    , y   : Int
+    , mov : Int
     }
 
-type alias Player = 
-    { x         : Float
-    , y         : Float
-    , speed     : Float
-    , direction : Int
-    }
-
-type alias Point =
-    { x : Float
-    , y : Float
-    }
-
-type alias Game = 
-    { state         : State
-    , background    : Background
-    , snake         : Player
-    , fruit         : Point
-    , score         : Int
-    }
-
-
-defaultGame : Game
-defaultGame = 
-    let 
-      state = Play
-      background = Background 800 600
-      snake = Player 5.0 5.0 1.0 0
-      fruit = Point 10.0 10.0
-      score = 0
-    
-    in
-    Game state background snake fruit score
-    
-
+init : () -> (Model, Cmd Msg)
+init _ =
+    ( Model 0 0 0
+    , Cmd.none)
 
 -- Update
 
-updateGame : Input -> Game -> Game
-updateGame input game = 
-    case input of 
-        space ->
-          game
-        
+type Msg 
+    = Increment
+    | Decrement
+
+update : Msg -> Model -> (Model, Cmd Msg)
+update msg model = 
+    (model, Cmd.none)
+
+
+-- Subscriptions
+
+subscriptions : Model -> Sub Msg
+subscriptions model = 
+    Sub.none
+
 -- View
 
-view : Game -> Html Input
-view game = 
-        img [ src "src/img1.png", width 1000, height 800] []
+view : Model -> Html Msg
+view model =    
+    svg 
+    [ width "800"
+    , height "800"
+    , viewBox "0 0 800 800"
+    ] 
+    [ rect [x (String.fromInt model.x), y (String.fromInt model.y), width "100", height "100", rx "15", ry "15"] []
+    ]
