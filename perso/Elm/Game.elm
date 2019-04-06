@@ -1,4 +1,6 @@
 import Browser
+import Browser.Events
+import Json.Decode
 import Html exposing (div)
 
 -- Main
@@ -43,10 +45,31 @@ update msg player =
 
 -- Subscriptions
 
+keyDecoder : Json.Decode.Decoder Msg
+keyDecoder = 
+    Json.Decode.map toDirection (Json.Decode.field "key" Json.Decode.string)
+
+toDirection : String -> Msg
+toDirection string = 
+    case string of
+        "ArrowLeft" -> 
+            KeyPressed Left
+        
+        "ArrowUp" ->
+            KeyPressed Up
+        
+        "ArrowRight" ->
+            KeyPressed Right
+
+        "ArrowDown" ->
+            KeyPressed Down
+
+        _ -> 
+            KeyPressed None
+
 subscriptions : Player -> Sub Msg
 subscriptions _ =
-    Sub.none
-
+    Browser.Events.onKeyDown keyDecoder
 
 -- View
 
