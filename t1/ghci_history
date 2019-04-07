@@ -1,0 +1,41 @@
+func2 ["palavras", "paralelas", "pedal", "paralelepipedo"]
+func ["palavras", "paralelas", "pedal", "paralelepipedo"]
+func ["palavras", "paralelas", "pedal", "paralepipedo"]
+betterEncodeName "Badtz Maru"
+encodeName "Badtz Maru"
+encodeName "Anderson Silva"
+encodeName "Anderson Silva""
+userName "JON BON JOVI"
+userName "Anderson Silva"
+lastName "JON BON JOVI"
+lastName "Anderson Silva"
+isInt "102932a123"
+isInt "102932a"
+isInt "102932"
+firstName "JON BON JOVI"
+firstName "Anderson Silva"
+codifica2 "Rio Grande do Sul"
+codifica "Rio Grande do Sul"
+semVogais "ae"
+semVogais2 "ae"
+semVogais2 "andrea"
+semVogais "andrea"
+htmlListItems2 ["abra", "ca", "dabra"]
+htmlListItems ["abra", "ca", "dabra"]
+addComma ["Teste1", "Teste2", "Teste3"]
+isVowel 'b'
+isVowel 'a'
+betterEncodeName "Badtz Maru"
+betterEncodeName "Anderson Silva"
+:l t1.hs
+concat (splitString "Hello")
+splitString "Hello"
+concat["a", "b", "c"]
+concat ([1, 2, 3] [4, 5, 6])
+concat [1, 2, 3] [4, 5, 6]
+:l t1.hs
+:l t1.hs
+codifica2 "rio grande do sul"
+codifica "rio grande do sul"
+codifica "aaa"
+:l t1.hs

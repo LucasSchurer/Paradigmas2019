@@ -178,7 +178,7 @@ update msg model =
 
 validMovement : GameSettings -> Player -> Bool
 validMovement game player =
-    if ( ( player.y - player.speed < 0 ) || ( player.y + player.speed + player.height > game.height ) ) then False else True 
+    if ( player.y - player.speed < 0 ) || ( player.y + player.speed + player.height > game.height ) then False else True 
 
 updatePlayer : Player -> Int -> Player
 updatePlayer player dir = 
