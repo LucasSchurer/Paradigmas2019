@@ -4,7 +4,6 @@ import Json.Decode
 import Svg
 import Svg.Attributes
 
-
 -- Main
 main = 
     Browser.element
@@ -16,17 +15,57 @@ main =
 
 -- Model
 
+type State 
+    = Play
+    | Pause
+
+type alias GameSettings =
+    { width : Int
+    , height : Int
+    , state : State
+    }
+
 type alias Player =    
     { x : Int
     , y : Int
-    , r : Int
+    , width : Int
+    , height : Int
+    , score : Int
     }
 
-init : () -> ( Player, Cmd Msg )
+type alias Model = 
+    { player1 : Player
+    , player2 : Player
+    , game : GameSettings
+    }
+
+init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Player 20 20 10
+    let
+        width = 600
+        height = 400
+
+    in
+    ( Model 
+        ( initPlayer 
+            ( width//2 + 10 ) 
+            ( height//2 + 10 ) 
+        ) 
+        ( initPlayer 
+            ( width//2 + 10 ) 
+            ( height//2 + 10 ) 
+        )
+        ( initGameSettings width height )
     , Cmd.none 
     )
+
+initPlayer : Int -> Int -> Player
+initPlayer x y = 
+    Player x y 0 0 0
+
+initGameSettings : Int -> Int -> GameSettings
+initGameSettings width height =
+    GameSettings width height Play
 
 -- Update
 
@@ -40,53 +79,10 @@ type Direction
 type Msg 
     = KeyPressed Direction
 
-update : Msg -> Player -> ( Player, Cmd Msg )
-update msg player = 
-    case msg of
-        KeyPressed Left ->
-            if ( player.x - 10 < 20 ) then 
-                ( player
-                , Cmd.none 
-                )
-            else 
-                ( { player | x = player.x - 10 }
-                , Cmd.none
-                )
-        
-        KeyPressed Up ->
-            if ( player.y - 10 < 20 ) then 
-                ( player
-                , Cmd.none 
-                )
-            else 
-                ( { player | y = player.y - 10 }
-                , Cmd.none
-                )
-
-        KeyPressed Right ->
-            if ( player.x + 10 > 400 ) then 
-                ( player
-                , Cmd.none 
-                )
-            else 
-                ( { player | x = player.x + 10 }
-                , Cmd.none
-                )
-
-        KeyPressed Down ->
-            if ( player.y + 10 > 600 ) then 
-                ( player
-                , Cmd.none 
-                )
-            else 
-                ( { player | y = player.y + 10 }
-                , Cmd.none
-                )
-
-        KeyPressed None ->
-            ( player
-            , Cmd.none
-            )    
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model = 
+    ( model, Cmd.none )
+    
 
 -- Subscriptions
 
@@ -112,7 +108,7 @@ toDirection string =
         _ -> 
             KeyPressed None
 
-subscriptions : Player -> Sub Msg
+subscriptions : Model -> Sub Msg
 subscriptions _ =
     Sub.batch 
         [ Browser.Events.onKeyDown keyDecoder
@@ -120,29 +116,16 @@ subscriptions _ =
 
 -- View
 
-view : Player -> Svg.Svg Msg
-view player = 
+view : Model -> Svg.Svg Msg
+view model = 
     Svg.svg 
         [ Svg.Attributes.width "800"
         , Svg.Attributes.height "800"
         , Svg.Attributes.viewBox "0 0 800 800"
         ]
         [ drawBackground
-        , drawPlayer player
         ]    
         
-    
-
-drawPlayer : Player -> Svg.Svg Msg
-drawPlayer player =
-     Svg.circle 
-        [ Svg.Attributes.cx ( String.fromInt player.x ) 
-        , Svg.Attributes.cy ( String.fromInt player.y )
-        , Svg.Attributes.r  ( String.fromInt player.r )
-        , Svg.Attributes.fill "red"   
-        ]
-        []
-
 drawBackground : Svg.Svg Msg
 drawBackground = 
     Svg.rect
