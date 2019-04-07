@@ -41,11 +41,18 @@ type alias Player =
     , score : Int
     }
 
+type alias Ball =
+    { x : Int
+    , y : Int
+    , r : Int
+    }
+
 type alias Model = 
     { player1 : Player
     , player2 : Player
     , game : GameSettings
     , window : WindowSettings
+    , ball : Ball
     }
 
 init : () -> ( Model, Cmd Msg )
@@ -57,21 +64,31 @@ init _ =
     in
     ( Model 
         ( initPlayer 
-            ( width // 2 - width // 4 + 30 ) 
-            ( 50 ) 
+            ( width // 2 - width // 4 + width // 64 ) 
+            ( height // 4 - width // 64 ) 
+            width
         ) 
         ( initPlayer 
-            ( width // 2 + width // 4 - 60 ) 
-            ( 50 ) 
+            ( width // 2 + width // 4 - 2 * ( width // 64 ) ) 
+            ( height // 4 - width // 64 )
+            width 
         )
         ( initGameSettings width height )
         ( initWindowSettings width height )
+        ( initBall 
+            ( width // 2  )
+            ( height // 4 )
+        )
     , Cmd.none 
     )
 
-initPlayer : Int -> Int -> Player
-initPlayer x y = 
-    Player x y 30 60 0
+initPlayer : Int -> Int -> Int -> Player
+initPlayer x y width = 
+    Player x y ( width // 64 ) ( width // 32 ) 0
+
+initBall : Int -> Int -> Ball
+initBall x y =
+    Ball x y ( x * 2 // 128)
 
 initGameSettings : Int -> Int -> GameSettings
 initGameSettings width height =
@@ -156,6 +173,7 @@ view model =
         [ drawBackground model.game
         , drawPlayer model.player1
         , drawPlayer model.player2
+        , drawBall model.ball
         ]    
         
 drawBackground : GameSettings -> Svg.Svg Msg
@@ -178,5 +196,14 @@ drawPlayer player =
         , Svg.Attributes.ry "10"
         , Svg.Attributes.width ( String.fromInt player.width )
         , Svg.Attributes.height ( String.fromInt player.height )
+        , Svg.Attributes.fill "white"
+        ] []
+
+drawBall : Ball -> Svg.Svg Msg
+drawBall ball = 
+    Svg.circle
+        [ Svg.Attributes.cx ( String.fromInt ball.x )
+        , Svg.Attributes.cy ( String.fromInt ball.y )
+        , Svg.Attributes.r ( String.fromInt ball.r )
         , Svg.Attributes.fill "white"
         ] []
