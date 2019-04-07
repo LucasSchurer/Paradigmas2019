@@ -1,0 +1,3 @@
+[submodule "elm-pong"]
+	path = elm-pong
+	url = https://github.com/LucasSchurer/elm-pong
