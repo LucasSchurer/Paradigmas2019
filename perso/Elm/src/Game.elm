@@ -38,6 +38,7 @@ type alias Player =
     , y : Int
     , width : Int
     , height : Int
+    , speed : Int
     , score : Int
     }
 
@@ -84,7 +85,7 @@ init _ =
 
 initPlayer : Int -> Int -> Int -> Player
 initPlayer x y width = 
-    Player x y ( width // 64 ) ( width // 32 ) 0
+    Player x y ( width // 64 ) ( width // 32 ) 10 0
 
 initBall : Int -> Int -> Ball
 initBall x y =
@@ -106,10 +107,10 @@ initWindowSettings width height =
 -- Update
 
 type Key 
-    = Left
-    | Up
-    | Right
+    = Up
     | Down
+    | W
+    | S
     | Space
     | None
 
@@ -119,8 +120,69 @@ type Msg
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model = 
-    ( model, Cmd.none )
+    case msg of 
+        KeyPressed key ->
+            case key of
+                Up -> 
+                    if validMovement model.game model.player1 then
+                        ( { model | player1 = updatePlayer model.player1 -1 }
+                        , Cmd.none 
+                        )
+
+                    else 
+                        ( model
+                        , Cmd.none 
+                        )
+                
+                Down ->
+                    if validMovement model.game model.player1 then
+                        ( { model | player1 = updatePlayer model.player1 1 }
+                        , Cmd.none 
+                        )
+
+                    else 
+                        ( model
+                        , Cmd.none 
+                        )
+                
+                W ->
+                    if validMovement model.game model.player2 then
+                        ( { model | player2 = updatePlayer model.player2 -1 }
+                        , Cmd.none 
+                        )
+
+                    else 
+                        ( model
+                        , Cmd.none 
+                        )
+                
+                S ->
+                    if validMovement model.game model.player2 then
+                        ( { model | player2 = updatePlayer model.player2 1 }
+                        , Cmd.none 
+                        )
+
+                    else 
+                        ( model
+                        , Cmd.none 
+                        )
+                
+                Space ->
+                    ( model, Cmd.none )
+                
+                None ->
+                    ( model, Cmd.none )        
+        _ ->
+            ( model, Cmd.none )
     
+
+validMovement : GameSettings -> Player -> Bool
+validMovement game player =
+    if ( player.y - player.speed < 0 ) || ( player.y + player.speed + player.height > game.height ) then False else True 
+
+updatePlayer : Player -> Int -> Player
+updatePlayer player dir = 
+    { player | y = player.y + ( dir * player.speed ) }
 
 -- Subscriptions
 
@@ -131,20 +193,21 @@ keyDecoder =
 toDirection : String -> Msg
 toDirection string = 
     case string of
-        "ArrowLeft" -> 
-            KeyPressed Left
-        
-        "ArrowUp" ->
+        "ArrowUp" -> 
             KeyPressed Up
         
-        "ArrowRight" ->
-            KeyPressed Right
-
         "ArrowDown" ->
             KeyPressed Down
+        
+        "w" ->
+            KeyPressed W
 
-        "Space" -> 
+        "s" ->
+            KeyPressed S
+
+        "" ->
             KeyPressed Space
+            
         _ -> 
             KeyPressed None
 
@@ -152,6 +215,7 @@ subscriptions : Model -> Sub Msg
 subscriptions _ =
     Sub.batch 
         [ Browser.Events.onKeyDown keyDecoder
+        , Browser.Events.onKeyDown keyDecoder
         ]
 
 -- View
