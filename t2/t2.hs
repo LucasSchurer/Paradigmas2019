@@ -29,17 +29,36 @@ genRects c l =
         (width, height) = (50, 50)
         gap = 10
 
-genCircles :: Int -> [Circle]
-genCircles n r1=
-    [ ( ( ( cos ( degreesToRad ( a * fromIntegral ( div 360 n ) ) ) * r1 + 2*r1), ( sin ( degreesToRad ( a * fromIntegral ( div 360 n ) ) ) * r1 + 2*r1 ) ), r) | a <- [ 0 .. fromIntegral (n+1) ] ]
+genCircles :: Int -> Int -> [Circle]
+genCircles n greaterCircleRadius =
+    [ ( 
+    ( ( cos ( degreesToRad ( a * angle ) ) * gr + aux )
+    , ( sin ( degreesToRad ( a * angle ) ) * gr + aux ) )
+    , r )
+    | a <- [ 0 .. fromIntegral (n+1) ] ]
 
     where
-        r = 10
+        gr = fromIntegral greaterCircleRadius
+        r = gr / ( fromIntegral n / 2 )
         angle = fromIntegral $ div 360 n
+        aux = 1.5 * gr
 
-genCircles' :: [(Circle, Circle, Circle)]
-genCircles' =
-    [ ( ( ( 100, 125 ), 50 ), ( ( 125, 100 ), 50 ), ( ( 100, 125 ), 50 ) ) ]
+
+
+genSinusoid :: [Circle]
+genSinusoid =
+    [ ( 
+    ( ( cos ( degreesToRad ( a * angle ) ) * gr + aux )
+    , ( sin ( degreesToRad ( a * angle ) ) * gr + aux ) )
+    , r )
+    | a <- [ 0 .. fromIntegral (10+1) ] ]
+
+    where
+        gr = fromIntegral 10
+        r = gr / ( fromIntegral 10 / 2 )
+        angle = fromIntegral $ div 360 10
+        aux = 1.5 * gr
+
 
 -- Geração das strings contendo as figuras em SVG
 
@@ -78,7 +97,7 @@ case2 = do
     writeFile "case2.svg" $ svgstrs
     where
         svgstrs = svgBegin w h ++ svgcircles ++ svgEnd
-        svgcircles = concat $ map svgCircles $ genCircles 12
+        svgcircles = concat $ map svgCircles $ genCircles 12 100
         (w, h) = (1920, 1080)
 
 
@@ -96,6 +115,7 @@ case4 = do
     writeFile "case4.svg" $ svgstrs
     where
         svgstrs = svgBegin w h ++ svgEnd
+        svgsinusoid = map svgCircles $ genSinusoid
         (w, h) = (1920, 1080)
 
         
