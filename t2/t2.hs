@@ -70,7 +70,13 @@ svgRects ( ( x, y ), w, h ) =
 
 svgCircles :: Circle -> String
 svgCircles ( ( x, y ), r ) =
-    printf "<circle cx = '%.2f' cy = '%.2f' r = '%.2f' style = 'fill:rgb(0, 0, 255)'/>" x y r   
+    printf "<circle cx = '%.2f' cy = '%.2f' r = '%.2f' " x y r ++ svgStyle
+    
+svgStyle :: String
+svgStyle =
+    "style = 'fill:rgb" ++
+    show (100, 100, 100) ++
+    "'/>"
 
 -- Geração das strings contendo os elementos básicos em SVG
 
