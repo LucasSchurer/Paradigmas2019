@@ -276,4 +276,6 @@ case4 = do
         svgstrs = svgBegin w h ++ svgsinusoid ++ svgEnd
         svgsinusoid = concat $ map svgCircles $ genSinusoids 10 90 17850
         ( w, h ) = ( 1920, 1080 )
+
+
     
