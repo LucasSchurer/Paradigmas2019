@@ -160,10 +160,9 @@ genCircles n greaterCircleRadius colourOption =
 
 genRectCircles :: Int -> Int -> (Int, Int, Int) -> Float -> [Shape]
 genRectCircles c l (cO1, cO2, cO3) r =
-    genRectCircles' ( r ) ( 2*r )   ( r ) ( c ) ( l ) ( cO1 ) ++
-    genRectCircles' ( 3*r ) ( 2*r ) ( r ) ( c ) ( l ) ( cO2 ) ++
-    genRectCircles' ( 2*r ) ( r )   ( r ) ( c ) ( l ) ( cO3 )
-
+    genRectCircles' ( 0 )       ( 0 )      ( r ) ( c ) ( l ) ( cO1 ) ++
+    genRectCircles' ( -0.75*r ) ( 0.75*r ) ( r ) ( c ) ( l ) ( cO2 ) ++
+    genRectCircles' ( 0.75*r )  ( 0.75*r ) ( r ) ( c ) ( l ) ( cO3 )
 
 genRectCircles' :: Float -> Float -> Float -> Int -> Int -> Int -> [Shape]
 genRectCircles' oX oY r c l colourOption =
@@ -226,7 +225,7 @@ svgStyle :: Shape -> String
 svgStyle shape =
     "style = 'fill:rgb" ++
     show (r, g, b) ++
-    "'/>"
+    "; mix-blend-mode: screen;'/>"
 
     where
         colours = colour shape
@@ -267,10 +266,9 @@ case3 = do
     writeFile "case3.svg" $ svgstrs
     where
         svgstrs = svgBegin w h ++ svgcircles ++ svgEnd
-        svgcircles = concat $ map svgCircles $ genRectCircles 10 10 (5, 8, 9) 10
+        svgcircles = concat $ map svgCircles $ genRectCircles 10 10 (1, 2, 3) 10
         ( w, h ) = ( 1920, 1080 )
         
-
 case4 :: IO ()
 case4 = do
     writeFile "case4.svg" $ svgstrs
