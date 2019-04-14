@@ -61,6 +61,61 @@ getColour option nObjects nObject
                         ( 0 )
                         ( 255 - nObject * colourVariation )
 
+    | option == 7 = Colour         -- Vermelho-Azul
+                        ( 255 - nObject * colourVariation )
+                        ( 0 )
+                        ( 0 + nObject * colourVariation )
+
+    | option == 8 = Colour         -- Vermelho-Verde
+                        ( 255 - nObject * colourVariation )
+                        ( 0 + nObject * colourVariation )
+                        ( 0 )
+
+    | option == 9 = Colour         -- Verde-Azul
+                        ( 0 )
+                        ( 255 - nObject * colourVariation )
+                        ( 0 + nObject * colourVariation )
+
+    | option == 10 = Colour        -- Verde-Vermelho
+                        ( 0 + nObject * colourVariation )
+                        ( 255 - nObject * colourVariation )
+                        ( 0 )
+
+    | option == 11 = Colour        -- Azul-Vermelho
+                        ( 0 + nObject * colourVariation )
+                        ( 0 )
+                        ( 255 - nObject * colourVariation )
+
+    | option == 12 = Colour        -- Azul-Verde
+                        ( 0 )
+                        ( 0 + nObject * colourVariation )
+                        ( 255 - nObject * colourVariation )
+
+    | option == 13 = Colour        -- 
+                        ( 255/2 - nObject * ( colourVariation/8 ) )
+                        ( 255/4 + nObject * ( colourVariation/4 ) )
+                        ( 255/4 + nObject * ( colourVariation/2 ) )
+
+    | option == 14 = Colour        -- 
+                        ( 255/2 - nObject * ( colourVariation/2 ) )
+                        ( 0 + nObject * colourVariation )
+                        (( 255/4 + nObject * ( colourVariation/4 ) ))
+
+    | option == 15 = Colour        -- 
+                        ( 255 - nObject * ( colourVariation ) )
+                        ( 255/4 + nObject * ( colourVariation/4 ) )
+                        ( 255/2 + nObject * ( colourVariation/2 ) )
+
+    | option == 16 = Colour        -- 
+                        ( 255/4 + nObject * ( colourVariation/4 ) )
+                        ( 255/6 + nObject * ( colourVariation/4 ) )
+                        ( 255/2 - nObject * ( colourVariation/2 ) )
+
+    | option == 17 = Colour        -- 
+                        ( 255/4 + nObject * ( colourVariation/4 ) )
+                        ( 255/6 - nObject * ( colourVariation/6 ) )
+                        ( 255/2 + nObject * ( colourVariation/2 ) )
+
     | otherwise = Colour 0 0 0 -- Preto
 
     where 
@@ -68,18 +123,15 @@ getColour option nObjects nObject
 
 -- Geração das formas geométricas utilizadas em cada caso.
 
-genRects :: Int -> Int -> [Shape]
-genRects c l =
+genRects :: Int -> Int -> Int -> [Shape]
+genRects c l colourOption =
     [ Rect
     ( Point 
         ( x * ( width + gap ) )
         ( y * ( height + gap ) ) )
     ( width )
     ( height )
-    ( Colour
-        ( 255 - ( cvar * ( x + y ) ) )
-        ( 0 )
-        ( 0 + ( cvar * ( x + y ) ) ) )
+    ( getColour colourOption ( c+l ) ( x+y ) )
     | x <- [ 1 .. fromIntegral ( c-1 ) ]
     , y <- [ 1 .. fromIntegral ( l-1 ) ] ]
 
@@ -89,17 +141,14 @@ genRects c l =
         cvar = 255 / fromIntegral (c+l)
         gap = 10
 
-genCircles :: Int -> Int -> [Shape]
-genCircles n greaterCircleRadius =
+genCircles :: Int -> Int -> Int -> [Shape]
+genCircles n greaterCircleRadius colourOption =
     [ Circle 
     ( Point
         ( cos ( degreesToRad ( a * angle ) ) * gr + aux )
         ( sin ( degreesToRad ( a * angle ) ) * gr + aux ) )
     ( r )
-    ( Colour 
-        ( 255 - ( cvar * a ) )
-        ( 255/4 + ( cvar/4 * a ) )
-        ( 255/2 + ( cvar/2 * a ) ) )
+    ( getColour colourOption n a )
     | a <- [ 0 .. fromIntegral ( n+1 ) ] ]
 
     where
@@ -111,7 +160,7 @@ genCircles n greaterCircleRadius =
 
 genSinusoids :: Int -> Int -> Int -> [Shape]
 genSinusoids nSinusoids nCircles variation =
-    genSinusoid 0 nCircles variation 12
+    concat [ genSinusoid ( 100 * fromIntegral i ) nCircles variation ( i+5 ) | i <- [ 0 .. nSinusoids ] ]
 
 genSinusoid :: Float -> Int -> Int -> Int -> [Shape]
 genSinusoid height n variation colourOption =
@@ -181,7 +230,7 @@ case1 = do
     writeFile "case1.svg" $ svgstrs
     where
         svgstrs = svgBegin w h ++ svgrects ++ svgEnd
-        svgrects = concat $ map svgRects $ genRects 20 10
+        svgrects = concat $ map svgRects $ genRects 10 10 14
         (w, h) = (1920, 1080)
 
 case2 :: IO ()
@@ -189,7 +238,7 @@ case2 = do
     writeFile "case2.svg" $ svgstrs
     where
         svgstrs = svgBegin w h ++ svgcircles ++ svgEnd
-        svgcircles = concat $ map svgCircles $ genCircles 60 200
+        svgcircles = concat $ map svgCircles $ genCircles 60 200 16
         (w, h) = (1920, 1080)   
 
 case4 :: IO ()
@@ -197,6 +246,6 @@ case4 = do
     writeFile "case4.svg" $ svgstrs
     where
         svgstrs = svgBegin w h ++ svgsinusoid ++ svgEnd
-        svgsinusoid = concat $ map svgCircles $ genSinusoids 3 40 1800
+        svgsinusoid = concat $ map svgCircles $ genSinusoids 10 90 7200
         (w, h) = (1920, 1080)
     
