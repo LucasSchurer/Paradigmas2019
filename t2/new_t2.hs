@@ -36,6 +36,36 @@ degreesToRad :: Float -> Float
 degreesToRad degrees =
     degrees * ( pi / 180 )
     
+-- Função para geração de cores.
+
+getColour :: Int -> Int -> Float -> Colour
+getColour option nObjects nObject
+    | option == 1 = Colour 255 0 0 -- Vermelho
+    
+    | option == 2 = Colour 0 255 0 -- Verde
+    
+    | option == 3 = Colour 0 0 255 -- Azul
+
+    | option == 4 = Colour         -- Vermelho-Preto
+                        ( 255 - nObject * colourVariation )
+                        ( 0 )
+                        ( 0 )
+    
+    | option == 5 = Colour         -- Verde-Preto
+                        ( 0 )
+                        ( 255 - nObject * colourVariation )
+                        ( 0 )
+
+    | option == 6 = Colour         -- Azul-Preto
+                        ( 0 )
+                        ( 0 )
+                        ( 255 - nObject * colourVariation )
+
+    | otherwise = Colour 0 0 0 -- Preto
+
+    where 
+        colourVariation = 255 / fromIntegral nObjects
+
 -- Geração das formas geométricas utilizadas em cada caso.
 
 genRects :: Int -> Int -> [Shape]
@@ -70,7 +100,7 @@ genCircles n greaterCircleRadius =
         ( 255 - ( cvar * a ) )
         ( 255/4 + ( cvar/4 * a ) )
         ( 255/2 + ( cvar/2 * a ) ) )
-    | a <- [ 0 .. fromIntegral (n+1) ] ]
+    | a <- [ 0 .. fromIntegral ( n+1 ) ] ]
 
     where
         gr = fromIntegral greaterCircleRadius
@@ -78,6 +108,26 @@ genCircles n greaterCircleRadius =
         angle = fromIntegral $ div 360 n
         aux = 1.5 * gr
         cvar = 255 / fromIntegral n
+
+genSinusoids :: Int -> Int -> Int -> [Shape]
+genSinusoids nSinusoids nCircles variation =
+    genSinusoid 0 nCircles variation 12
+
+genSinusoid :: Float -> Int -> Int -> Int -> [Shape]
+genSinusoid height n variation colourOption =
+    [ Circle
+    ( Point
+        ( size * a + 2 * r )
+        ( sin ( degreesToRad ( a * angle ) ) * size + aux + height ) )
+    ( r )
+    ( getColour colourOption n a )
+    | a <- [ 0 .. fromIntegral ( n+1 ) ] ]
+
+    where
+        size = 20
+        r = 6
+        angle = fromIntegral $ div variation n
+        aux = 1.5 * size
 
 -- Geração das strings contendo as figuras em SVG.
 
@@ -141,3 +191,12 @@ case2 = do
         svgstrs = svgBegin w h ++ svgcircles ++ svgEnd
         svgcircles = concat $ map svgCircles $ genCircles 60 200
         (w, h) = (1920, 1080)   
+
+case4 :: IO ()
+case4 = do
+    writeFile "case4.svg" $ svgstrs
+    where
+        svgstrs = svgBegin w h ++ svgsinusoid ++ svgEnd
+        svgsinusoid = concat $ map svgCircles $ genSinusoids 3 40 1800
+        (w, h) = (1920, 1080)
+    
