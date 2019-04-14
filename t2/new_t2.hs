@@ -47,17 +47,37 @@ genRects c l =
     ( width )
     ( height )
     ( Colour
-        ( 255 - ( var * ( x + y ) ) )
+        ( 255 - ( cvar * ( x + y ) ) )
         ( 0 )
-        ( 0 + ( var * ( x + y ) ) ) )
+        ( 0 + ( cvar * ( x + y ) ) ) )
     | x <- [ 1 .. fromIntegral ( c-1 ) ]
     , y <- [ 1 .. fromIntegral ( l-1 ) ] ]
 
     where
         width = 50 :: Float
         height = 50 :: Float
-        var = 255 / fromIntegral (c+l)
+        cvar = 255 / fromIntegral (c+l)
         gap = 10
+
+genCircles :: Int -> Int -> [Shape]
+genCircles n greaterCircleRadius =
+    [ Circle 
+    ( Point
+        ( cos ( degreesToRad ( a * angle ) ) * gr + aux )
+        ( sin ( degreesToRad ( a * angle ) ) * gr + aux ) )
+    ( r )
+    ( Colour 
+        ( 255 - ( cvar * a ) )
+        ( 255/4 + ( cvar/4 * a ) )
+        ( 255/2 + ( cvar/2 * a ) ) )
+    | a <- [ 0 .. fromIntegral (n+1) ] ]
+
+    where
+        gr = fromIntegral greaterCircleRadius
+        r = gr / ( fromIntegral n / 2 )
+        angle = fromIntegral $ div 360 n
+        aux = 1.5 * gr
+        cvar = 255 / fromIntegral n
 
 -- Geração das strings contendo as figuras em SVG.
 
@@ -71,6 +91,16 @@ svgRects rect =
         y' = y points
         h = height rect
         w = width rect
+
+svgCircles :: Shape -> String
+svgCircles circle =
+    printf "<circle cx = '%.2f' cy = '%.2f' r = '%.2f' " x' y' r' ++ svgStyle circle
+
+    where
+        points = point circle
+        x' = x points
+        y' = y points
+        r' = r circle
 
 svgStyle :: Shape -> String
 svgStyle shape =
@@ -103,3 +133,11 @@ case1 = do
         svgstrs = svgBegin w h ++ svgrects ++ svgEnd
         svgrects = concat $ map svgRects $ genRects 20 10
         (w, h) = (1920, 1080)
+
+case2 :: IO ()
+case2 = do
+    writeFile "case2.svg" $ svgstrs
+    where
+        svgstrs = svgBegin w h ++ svgcircles ++ svgEnd
+        svgcircles = concat $ map svgCircles $ genCircles 60 200
+        (w, h) = (1920, 1080)   
