@@ -43,21 +43,23 @@ genCircles n greaterCircleRadius =
         angle = fromIntegral $ div 360 n
         aux = 1.5 * gr
 
+genSinusoid :: Int -> Int -> Int -> [Circle]
+genSinusoid h n variation =
+    genSinusoid' 0 n variation ++ genSinusoid' 100 n variation ++ genSinusoid' 200 n variation
 
-
-genSinusoid :: [Circle]
-genSinusoid =
+genSinusoid' :: Int -> Int -> Int -> [Circle]
+genSinusoid' h n variation =
     [ ( 
-    ( ( cos ( degreesToRad ( a * angle ) ) * gr + aux )
-    , ( sin ( degreesToRad ( a * angle ) ) * gr + aux ) )
+    ( size * a + 2 * r
+    , ( sin ( degreesToRad ( a * angle ) ) * size + aux + fromIntegral h ) )
     , r )
-    | a <- [ 0 .. fromIntegral (10+1) ] ]
+    | a <- [ 0 .. fromIntegral (n+1) ] ]
 
     where
-        gr = fromIntegral 10
-        r = gr / ( fromIntegral 10 / 2 )
-        angle = fromIntegral $ div 360 10
-        aux = 1.5 * gr
+        size = 20
+        r = 6
+        angle = fromIntegral $ div variation n
+        aux = 1.5 * size
 
 
 -- Geração das strings contendo as figuras em SVG
@@ -114,8 +116,8 @@ case4 :: IO ()
 case4 = do
     writeFile "case4.svg" $ svgstrs
     where
-        svgstrs = svgBegin w h ++ svgEnd
-        svgsinusoid = map svgCircles $ genSinusoid
+        svgstrs = svgBegin w h ++ svgsinusoid ++ svgEnd
+        svgsinusoid = concat $ map svgCircles $ genSinusoid 3 40 1800
         (w, h) = (1920, 1080)
 
         
