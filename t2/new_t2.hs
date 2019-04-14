@@ -2,60 +2,87 @@ import Text.Printf
 
 -- Definição dos tipos.
 
-type Point =
-    ( Float, Float )
+data Point = 
+    Point
+    { x :: Float
+    , y :: Float
+    }
 
-type Colour = 
-    ( Float, Float, Float )
+data Colour = 
+    Colour
+    { red :: Float
+    , green :: Float
+    , blue :: Float 
+    }
 
-type Rect =
-    ( Point, Float, Float, Colour )
+data Shape =
+    Rect
+    { point :: Point
+    , width :: Float
+    , height :: Float
+    , colour :: Colour
+    } |
+    
+    Circle
+    { point :: Point
+    , r :: Float
+    , colour :: Colour
+    }
 
-type Circle =
-    ( Point, Float, Colour )
 
 -- Funções matemáticas auxiliares.
 
 degreesToRad :: Float -> Float
 degreesToRad degrees =
     degrees * ( pi / 180 )
-
-
--- Funções para gerar cores.
-
-getColour :: Int -> Colour
-getColour x
-    | x == 1 = ( 255, 0, 0 ) -- Vermelho
-    | x == 2 = ( 0, 0, 255 ) -- Verde
-    | x == 3 = ( 0, 0, 255 ) -- Azul
-    | otherwise = ( 0, 0, 0 ) -- Preto
-
-
+    
 -- Geração das formas geométricas utilizadas em cada caso.
 
-genRects :: Int -> Int -> [Rect]
+genRects :: Int -> Int -> [Shape]
 genRects c l =
-    [ ( 
-    ( x * ( width + gap )
-    , y * ( height + gap ) )
-    , width
-    , height
-    , ( r, g, b ) ) 
-    | x <- [ 1 .. fromIntegral (c-1) ]
-    , y <- [ 1 .. fromIntegral (l-1) ] ] 
+    [ Rect
+    ( Point 
+        ( x * ( width + gap ) )
+        ( y * ( height + gap ) ) )
+    ( width )
+    ( height )
+    ( Colour
+        ( 255 - ( var * ( x + y ) ) )
+        ( 0 )
+        ( 0 + ( var * ( x + y ) ) ) )
+    | x <- [ 1 .. fromIntegral ( c-1 ) ]
+    , y <- [ 1 .. fromIntegral ( l-1 ) ] ]
 
-    where 
-        ( width, height ) = ( 50, 50 )
+    where
+        width = 50 :: Float
+        height = 50 :: Float
+        var = 255 / fromIntegral (c+l)
         gap = 10
-        ( r, g, b ) = ( 100, 100, 100 )
-
 
 -- Geração das strings contendo as figuras em SVG.
 
-svgRects :: Rect -> String
-svgRects ( ( x, y ), w, h, ( r, g, b) ) =
-    printf "<rect x = '%.2f' y = '%.2f' width = '%.2f' height = '%.2f' style = 'fill:rgb(%.2f, %.2f, %.2f)'/>" x y w h r g b
+svgRects :: Shape -> String
+svgRects rect =
+    printf "<rect x = '%.2f' y = '%.2f' width = '%.2f' height = '%.2f' " x' y' w h ++ svgStyle rect
 
+    where 
+        points = point rect 
+        x' = x points
+        y' = y points
+        h = height rect
+        w = width rect
+
+svgStyle :: Shape -> String
+svgStyle shape =
+    "style = 'fill:rgb" ++
+    show (r, g, b) ++
+    "'/>"
+
+    where
+        colours = colour shape
+        r = red colours
+        g = green colours
+        b = blue colours
 
 -- Geração das strings contendo elementos básicos em SVG.
 
@@ -67,7 +94,6 @@ svgEnd :: String
 svgEnd =
     "</svg>"
 
-
 -- Casos
 
 case1 :: IO ()
@@ -75,5 +101,5 @@ case1 = do
     writeFile "case1.svg" $ svgstrs
     where
         svgstrs = svgBegin w h ++ svgrects ++ svgEnd
-        svgrects = concat $ map svgRects $ genRects 10 5
-        ( w, h ) = ( 1920, 1080 )
+        svgrects = concat $ map svgRects $ genRects 20 10
+        (w, h) = (1920, 1080)
