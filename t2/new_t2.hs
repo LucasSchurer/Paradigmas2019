@@ -139,7 +139,7 @@ genRects c l colourOption =
         width = 50 :: Float
         height = 50 :: Float
         cvar = 255 / fromIntegral (c+l)
-        gap = 10
+        gap = 10 :: Float
 
 genCircles :: Int -> Int -> Int -> [Shape]
 genCircles n greaterCircleRadius colourOption =
@@ -157,6 +157,27 @@ genCircles n greaterCircleRadius colourOption =
         angle = fromIntegral $ div 360 n
         aux = 1.5 * gr
         cvar = 255 / fromIntegral n
+
+genRectCircles :: Int -> Int -> (Int, Int, Int) -> Float -> [Shape]
+genRectCircles c l (cO1, cO2, cO3) r =
+    genRectCircles' ( r ) ( 2*r )   ( r ) ( c ) ( l ) ( cO1 ) ++
+    genRectCircles' ( 3*r ) ( 2*r ) ( r ) ( c ) ( l ) ( cO2 ) ++
+    genRectCircles' ( 2*r ) ( r )   ( r ) ( c ) ( l ) ( cO3 )
+
+
+genRectCircles' :: Float -> Float -> Float -> Int -> Int -> Int -> [Shape]
+genRectCircles' oX oY r c l colourOption =
+    [ Circle
+    ( Point 
+        ( x * ( r + gap ) + oX )
+        ( y * ( r + gap ) + oY ) )
+    ( r )
+    ( getColour colourOption ( c+l ) ( x+y ) )
+    | x <- [ 1 .. fromIntegral ( c-1 ) ]
+    , y <- [ 1 .. fromIntegral ( l-1 ) ] ]
+
+    where
+        gap = 3.5*r
 
 genSinusoids :: Int -> Int -> Int -> [Shape]
 genSinusoids nSinusoids nCircles variation =
@@ -231,7 +252,7 @@ case1 = do
     where
         svgstrs = svgBegin w h ++ svgrects ++ svgEnd
         svgrects = concat $ map svgRects $ genRects 10 10 14
-        (w, h) = (1920, 1080)
+        ( w, h ) = ( 1920, 1080 )
 
 case2 :: IO ()
 case2 = do
@@ -239,13 +260,22 @@ case2 = do
     where
         svgstrs = svgBegin w h ++ svgcircles ++ svgEnd
         svgcircles = concat $ map svgCircles $ genCircles 60 200 16
-        (w, h) = (1920, 1080)   
+        ( w, h ) = ( 1920, 1080 )   
+
+case3 :: IO ()
+case3 = do
+    writeFile "case3.svg" $ svgstrs
+    where
+        svgstrs = svgBegin w h ++ svgcircles ++ svgEnd
+        svgcircles = concat $ map svgCircles $ genRectCircles 10 10 (5, 8, 9) 10
+        ( w, h ) = ( 1920, 1080 )
+        
 
 case4 :: IO ()
 case4 = do
     writeFile "case4.svg" $ svgstrs
     where
         svgstrs = svgBegin w h ++ svgsinusoid ++ svgEnd
-        svgsinusoid = concat $ map svgCircles $ genSinusoids 10 90 7200
-        (w, h) = (1920, 1080)
+        svgsinusoid = concat $ map svgCircles $ genSinusoids 10 90 17850
+        ( w, h ) = ( 1920, 1080 )
     
