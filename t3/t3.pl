@@ -99,3 +99,13 @@ potenciasAux(N, [H|T], I) :-
  I1 is I + 1,
  potenciasAux(N, T, I1),
  !.
+
+ % 12 - Retorna uma lista que retorna a quantidade de notas para um valor N, dado valores de notas em uma lista L.
+cedulas(0, _, []).
+cedulas(V, [H1|T1], [H2|T2]) :-
+ V > 0,
+ Div is div(V, H1),
+ H2 = Div,
+ Mod is mod(V, H1),
+ cedulas(Mod, T1, T2),
+ !. 
