@@ -69,3 +69,33 @@ nRandoms(N, [H|T]) :-
  N1 is N - 1,
  nRandoms(N1, T),
  !.
+
+ % 9 - Retorna uma lista com as potências de 2, com expoentes de N a 0.
+ potN0(0, []).
+
+ potN0(N, [H|T]) :-
+  N > 0,
+  H is 2^N,
+  N1 is N - 1,
+  potN0(N1, T), 
+  !.
+
+% 10 - Retorna uma lista com os produtos dos valores de mesma posição de duas listas L1 e L2, considerando que as listas possuem o mesmo tamanho.
+zipmult([], [], []).
+
+zipmult([H1|T1], [H2|T2], [H3|T3]) :-
+ Mult is H1*H2,
+ H3 = Mult,
+ zipmult(T1, T2, T3).
+
+% 11 - Retorna uma lista com as potências de 2, com expoentes de 0 a N.
+potencias(N, L) :-
+ potenciasAux(N, L, 0).
+
+potenciasAux(N, [], N).
+potenciasAux(N, [H|T], I) :-
+ I < N,
+ H is 2^I,
+ I1 is I + 1,
+ potenciasAux(N, T, I1),
+ !.
