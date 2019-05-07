@@ -113,4 +113,7 @@ chave(S) :-
  localizacao(S, terca, poa).
 
 assassino(S) :-
- chave(S), motivo(S), armado(S), localizacao(S, sexta, apt), localizacao(S, quinta, apt).
+ chave(S), motivo(S), armado(S), localizacao(S, quinta, apt), !.
+
+assassino(S) :-
+ chave(S), motivo(S), armado(S), localizacao(S, sexta, apt), !.
