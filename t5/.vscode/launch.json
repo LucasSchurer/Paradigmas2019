@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - RandomPickerCmd",
+            "request": "launch",
+            "mainClass": "src.RandomPickerCmd",
+            "projectName": "t5_87ffc8b6"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - Teste",
             "request": "launch",
             "mainClass": "Teste"

@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-
+import java.util.Arrays;
 import java.io.File;
 
 import javafx.application.Application;
@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -36,27 +37,61 @@ public class RandomPickerGUI extends Application {
     }
 
     public void start(Stage stage) {
-        final String fileName = "teste.txt";
+        final String fileName = "/0.txt";
 
-        final RandomPicker randomPicker = new RandomPicker(fileName);
+        final RandomPicker randomPicker = new RandomPicker("/0.txt");
+
+        // Label
+        final Label randomElementLbl = new Label("I can't shuffle an empty list :(");
 
         // TextArea
-        String fileText = getStringGivenTextFile(randomPicker.getTextFile());
+        final TextArea textArea = new TextArea("");
+        randomPicker.setStringList(new ArrayList<String>());
 
-        final TextArea textArea = new TextArea(fileText);
         textArea.setMinHeight(650);
+        textArea.textProperty().addListener((obs, old, niu) -> {
+            String newText = textArea.getText();
+            ArrayList<String> newStringList = new ArrayList<String>(Arrays.asList(newText.split("\n")));
+            randomPicker.setStringList(newStringList);
+
+            if (!randomPicker.checkStringListEmpty())
+                randomElementLbl.setText("You need to shuffle the list in order to see an element.");
+        });
 
         // Butttons
         final Button btnShuffle = new Button("Shuffle");
+        final Button btnNext = new Button("Next");
+
         btnShuffle.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
+
+                textArea.setDisable(true);
+                btnShuffle.setDisable(true);
+                btnNext.setDisable(false);
+
                 randomPicker.shuffle();
-                String fileTextAux = getStringGivenTextFile(randomPicker.getTextFile());
-                textArea.setText(fileTextAux);
+
+                randomElementLbl.setText(randomPicker.getFirstElementStringList());
             }
         });
 
-        final Button btnNext = new Button("Next");
+        btnNext.setDisable(true);
+        btnNext.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                if (randomPicker.checkStringListEmpty()) {
+                    btnNext.setDisable(true);
+                    btnShuffle.setDisable(false);
+                    textArea.setDisable(false);
+
+                    randomPicker.setStringList(new ArrayList<String>(Arrays.asList(textArea.getText().split("\n"))));
+
+                    randomElementLbl.setText("You need to shuffle the list in order to see an element.");
+
+                } else {
+                    randomElementLbl.setText(randomPicker.getFirstElementStringList());
+                }
+            }
+        });
 
         // Criação da MenuBar
         // File -> Open
@@ -67,11 +102,9 @@ public class RandomPickerGUI extends Application {
             public void handle(ActionEvent event) {
                 File file = fileChooser.showOpenDialog(stage);
                 if (file != null) {
-                    String fileName = file.getName();
-                    randomPicker.setTextFile(fileName);
-
-                    String fileTextAux = getStringGivenTextFile(randomPicker.getTextFile());
-                    textArea.setText(fileTextAux);
+                    String fileName = file.getAbsolutePath();
+                    textArea.setText(getStringGivenTextFile(new TextFile(fileName)));
+                    randomPicker.setStringList(new ArrayList<String>(Arrays.asList(textArea.getText().split("\n"))));
                 }
             }
         });
@@ -82,6 +115,17 @@ public class RandomPickerGUI extends Application {
 
         // Help -> About
         final MenuItem menuItemAbout = new MenuItem("About");
+        menuItemAbout.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                Label aboutLbl = new Label("Random Picker\nAuthor: Lucas Schurer");
+                VBox vbox = new VBox();
+                Stage stage = new Stage();
+
+                vbox.getChildren().add(aboutLbl);
+                stage.setScene(new Scene(vbox, 300, 100));
+                stage.show();
+            }
+        });
 
         // File
         final Menu menuFile = new Menu("File");
@@ -97,7 +141,7 @@ public class RandomPickerGUI extends Application {
 
         // VBox
         final VBox vbox = new VBox();
-        vbox.getChildren().addAll(menuBar, textArea, btnShuffle, btnNext);
+        vbox.getChildren().addAll(menuBar, textArea, btnShuffle, btnNext, randomElementLbl);
 
         stage.setScene(new Scene(vbox, 600, 800));
         stage.show();

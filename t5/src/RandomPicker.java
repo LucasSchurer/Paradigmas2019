@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -7,20 +12,15 @@ class RandomPicker {
 
     RandomPicker(String fileName) {
         setTextFile(fileName);
-        setStringList();
+        setStringList(this.file.getFileContent());
     }
 
     public void setTextFile(String fileName) {
         TextFile f = new TextFile(fileName);
         this.file = f;
-
-        setStringList();
     }
 
-    public void setStringList() {
-        ArrayList<String> fileContent = new ArrayList<String>();
-        fileContent = this.file.getFileContent();
-
+    public void setStringList(ArrayList<String> fileContent) {
         this.stringList = fileContent;
     }
 
@@ -30,6 +30,10 @@ class RandomPicker {
 
     public ArrayList<String> getStringList() {
         return this.stringList;
+    }
+
+    public boolean checkStringListEmpty() {
+        return this.stringList.isEmpty();
     }
 
     public void printStringList() {
@@ -43,8 +47,9 @@ class RandomPicker {
     }
 
     public void shuffle() {
+        String urlString = "https://www.random.org/lists";
+
         Collections.shuffle(this.stringList);
-        file.copyArrayListToFile(this.stringList);
     }
 
     public String getFirstElementStringList() {
@@ -58,5 +63,9 @@ class RandomPicker {
         }
 
         return element;
+    }
+
+    public String getFileName() {
+        return file.getFileName();
     }
 }

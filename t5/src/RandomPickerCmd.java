@@ -40,6 +40,8 @@ class RandomPickerCmd {
                 }
             } catch (NoSuchElementException e) {
                 System.out.println("\n\tExiting application.");
+            } catch (NullPointerException e2) {
+                System.out.println("\n\tError while opening file. Please, check if the name is correct.");
             }
 
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -47,7 +49,7 @@ class RandomPickerCmd {
             System.out.println("                ERROR                ");
             System.out.println("=====================================");
             System.out.print("Please, select a file to open.\n");
-            System.out.println("Example: java -cp ../; RandomPickerCmd names.txt");
+            System.out.println("Example: java -cp ../classes; RandomPickerCmd names.txt");
             System.out.println("Exiting application.");
             return;
         }
