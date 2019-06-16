@@ -24,72 +24,58 @@ public class MinecraftApp extends Application {
     private SimpleStringProperty second;
     private SimpleStringProperty third;
 
-    private DataEntry(String a, String b, String c)
-    {
+    private DataEntry(String a, String b, String c) {
       this.first = new SimpleStringProperty(a);
       this.second = new SimpleStringProperty(b);
       this.third = new SimpleStringProperty(c);
     }
 
-    public SimpleStringProperty firstProperty()
-    {
+    public SimpleStringProperty firstProperty() {
       return first;
     }
 
-    public String getFirst()
-    {
+    public String getFirst() {
       return first.get();
     }
 
-    public void setFirst(String a)
-    {
+    public void setFirst(String a) {
       first.set(a);
     }
 
-    public SimpleStringProperty secondProperty()
-    {
+    public SimpleStringProperty secondProperty() {
       return second;
     }
 
-    public String getSecond()
-    {
+    public String getSecond() {
       return second.get();
     }
 
-    public void setSecond(String a)
-    {
+    public void setSecond(String a) {
       second.set(a);
     }
 
-    public SimpleStringProperty thirdProperty()
-    {
+    public SimpleStringProperty thirdProperty() {
       return third;
     }
 
-    public String getThird()
-    {
+    public String getThird() {
       return third.get();
     }
 
-    public void setThird(String a)
-    {
+    public void setThird(String a) {
       third.set(a);
     }
 
   }
 
-  private final ObservableList<DataEntry> data =
-    FXCollections.observableArrayList(
-      new DataEntry("Madeira", "Não", "10")
-    );
+  private final ObservableList<DataEntry> data = FXCollections
+      .observableArrayList(new DataEntry("Madeira", "Não", "10"));
 
-  public static void main(String[] args)
-  {
+  public static void main(String[] args) {
     Application.launch(args);
   }
 
-  public void start(Stage stage)
-  {
+  public void start(Stage stage) {
 
     // Define as tabelas
     TableView table = new TableView();
@@ -97,18 +83,14 @@ public class MinecraftApp extends Application {
     TableColumn sndCol = new TableColumn("Transparência");
     TableColumn trdCol = new TableColumn("Resistência a Explosão");
 
-    fstCol.setCellValueFactory(
-      new PropertyValueFactory<DataEntry, String>("first"));
+    fstCol.setCellValueFactory(new PropertyValueFactory<DataEntry, String>("first"));
 
-    sndCol.setCellValueFactory(
-      new PropertyValueFactory<DataEntry, String>("second"));
+    sndCol.setCellValueFactory(new PropertyValueFactory<DataEntry, String>("second"));
 
-    trdCol.setCellValueFactory(
-      new PropertyValueFactory<DataEntry, String>("third"));
+    trdCol.setCellValueFactory(new PropertyValueFactory<DataEntry, String>("third"));
 
     table.setItems(data);
     table.getColumns().addAll(fstCol, sndCol, trdCol);
-
 
     TextField nameTxtFld = new TextField();
     TextField transparencyTxtFld = new TextField();
@@ -124,8 +106,7 @@ public class MinecraftApp extends Application {
     Button btnDel = new Button("Remover bloco");
     btnDel.setOnAction(new EventHandler<ActionEvent>() {
       public void handle(ActionEvent event) {
-        int selectedIndex =
-          table.getSelectionModel().getSelectedIndex();
+        int selectedIndex = table.getSelectionModel().getSelectedIndex();
 
         data.remove(selectedIndex);
       }
@@ -147,12 +128,7 @@ public class MinecraftApp extends Application {
     VBox vbox = new VBox();
     vbox.getChildren().addAll(table, nameTxtFld, transparencyTxtFld, resistanceTxtFld, btnAdd, btnDel, btnModify);
 
-
     stage.setScene(new Scene(vbox, 800, 400));
     stage.show();
   }
-
-
-
-
 }

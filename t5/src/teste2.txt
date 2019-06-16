@@ -1,0 +1,4 @@
+azul
+amarelo
+verde
+grande
