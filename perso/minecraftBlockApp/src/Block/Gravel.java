@@ -1,7 +1,8 @@
 import java.util.ArrayList;
-import javafx.util.Pair;
+import java.util.Arrays;
+import java.util.Random;
 
-class BlockExample extends Block {
+class Gravel extends Block {
     private int id;
     private String name;
     private double transparency;
@@ -14,7 +15,7 @@ class BlockExample extends Block {
     private ArrayList<Integer> drops;
     private double hardness;
 
-    BlockExample() {
+    Gravel() {
         setId();
         setName();
         setTransparency();
@@ -29,47 +30,56 @@ class BlockExample extends Block {
     }
 
     public void setId() {
-
+        this.id = 13;
     }
 
     public void setName() {
-
+        this.name = "gravel";
     }
 
     public void setTransparency() {
-
+        this.transparency = 0;
     }
 
     public void setLuminancy() {
-
+        this.luminancy = 0;
     }
 
     public void setBlastResistance() {
-
+        this.blastResistance = 3;
     }
 
     public void setToolType() {
-
+        this.toolType = "shovel";
     }
 
     public void setRenewable() {
-
+        this.renewable = false;
     }
 
     public void setStackable() {
-
+        this.stackable = 64;
     }
 
     public void setFlammable() {
-
+        this.flammable = 0;
     }
 
     public void setDrops() {
+        Random random = new Random();
+        int drop = random.nextInt(100);
+        drop++;
+        if (drop > 90) {
+            drop = 318;
+        } else {
+            drop = 13;
+        }
 
+        this.drops = new ArrayList<Integer>(Arrays.asList(drop));
     }
 
     public void setHardness() {
-
+        this.hardness = 0.6;
     }
 
     public int getId() {
@@ -109,7 +119,7 @@ class BlockExample extends Block {
     }
 
     public ArrayList<Integer> getDrops() {
-        return new ArrayList<Integer>();
+        return this.drops;
     }
 
     public double getHardness() {
@@ -117,6 +127,6 @@ class BlockExample extends Block {
     }
 
     public ArrayList<Integer> breakBlock(Tool tool) {
-        return new ArrayList<Integer>();
+        return this.getDrops();
     }
 }

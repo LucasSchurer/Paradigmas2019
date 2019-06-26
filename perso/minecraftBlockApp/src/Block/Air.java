@@ -1,12 +1,10 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javafx.util.Pair;
-
-class Stone extends Block {
+class Air extends Block {
     private int id;
     private String name;
-    private float transparency;
+    private double transparency;
     private double luminancy;
     private double blastResistance;
     private String toolType;
@@ -16,7 +14,7 @@ class Stone extends Block {
     private ArrayList<Integer> drops;
     private double hardness;
 
-    Stone() {
+    Air() {
         setId();
         setName();
         setTransparency();
@@ -31,15 +29,15 @@ class Stone extends Block {
     }
 
     public void setId() {
-        this.id = 1;
+        this.id = 0;
     }
 
     public void setName() {
-        this.name = "stone";
+        this.name = "air";
     }
 
     public void setTransparency() {
-        this.transparency = 0;
+        this.transparency = -1;
     }
 
     public void setLuminancy() {
@@ -47,11 +45,11 @@ class Stone extends Block {
     }
 
     public void setBlastResistance() {
-        this.blastResistance = 30;
+        this.blastResistance = 0;
     }
 
     public void setToolType() {
-        this.toolType = "pickaxe";
+        this.toolType = "none";
     }
 
     public void setRenewable() {
@@ -59,7 +57,7 @@ class Stone extends Block {
     }
 
     public void setStackable() {
-        this.stackable = 64;
+        this.stackable = 0;
     }
 
     public void setFlammable() {
@@ -67,11 +65,11 @@ class Stone extends Block {
     }
 
     public void setDrops() {
-        this.drops = new ArrayList<Integer>(Arrays.asList(4));
+        this.drops = new ArrayList<Integer>();
     }
 
     public void setHardness() {
-        this.hardness = 1.5;
+        this.hardness = -1;
     }
 
     public int getId() {
@@ -111,7 +109,7 @@ class Stone extends Block {
     }
 
     public ArrayList<Integer> getDrops() {
-        return this.drops;
+        return null;
     }
 
     public double getHardness() {
@@ -119,12 +117,6 @@ class Stone extends Block {
     }
 
     public ArrayList<Integer> breakBlock(Tool tool) {
-        if (tool.getType() == this.getToolType()) {
-            System.out.println("Dropou");
-            return getDrops();
-        } else {
-            System.out.println("Ferramenta errada");
-            return null;
-        }
+        return null;
     }
 }
