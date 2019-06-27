@@ -14,14 +14,11 @@ import java.util.ArrayList;
 public class MinecraftWood extends Application {
   private int pos = 0;
 
-  public static void main(String[] args)
-  {
+  public static void main(String[] args) {
     Application.launch(args);
   }
 
-
-  public ArrayList<Image> getImages()
-  {
+  public ArrayList<Image> getImages() {
     ArrayList<Image> img = new ArrayList<Image>();
     img.add(new Image("img/acacia.png"));
     img.add(new Image("img/carvalho.png"));
@@ -34,15 +31,13 @@ public class MinecraftWood extends Application {
     return img;
   }
 
-
-  public Image getNextImage(ArrayList<Image> list)
-  {
+  public Image getNextImage(ArrayList<Image> list) {
     int aux;
 
-    if (pos == list.size()-1)
+    if (pos == list.size() - 1)
       aux = 0;
     else
-      aux = pos+1;
+      aux = pos + 1;
 
     this.pos = aux;
 
@@ -50,14 +45,13 @@ public class MinecraftWood extends Application {
     return image;
   }
 
-  public Image getPreviousImage(ArrayList<Image> list)
-  {
+  public Image getPreviousImage(ArrayList<Image> list) {
     int aux;
 
     if (pos == 0)
-      aux = list.size()-1;
+      aux = list.size() - 1;
     else
-      aux = pos-1;
+      aux = pos - 1;
 
     this.pos = aux;
 
@@ -65,12 +59,10 @@ public class MinecraftWood extends Application {
     return image;
   }
 
-  public void start(Stage stage)
-  {
+  public void start(Stage stage) {
     ArrayList<Image> imgs = getImages();
     Image image = imgs.get(0);
     ImageView imageView = new ImageView(image);
-
 
     Button btn1 = new Button("<");
     btn1.setOnAction(new EventHandler<ActionEvent>() {
@@ -93,11 +85,7 @@ public class MinecraftWood extends Application {
     border.setRight(btn2);
     border.setCenter(imageView);
 
-
     stage.setScene(new Scene(border, 800, 600));
     stage.show();
-
   }
-
-
 }

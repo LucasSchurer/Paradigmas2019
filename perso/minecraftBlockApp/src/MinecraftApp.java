@@ -1,22 +1,31 @@
-import java.util.ArrayList;
+import javafx.application.Application;
 
-class MinecraftApp {
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.control.Button;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+
+import javafx.stage.Stage;
+
+public class MinecraftApp extends Application {
     public static void main(String[] args) {
-        Inventory playerInventory = new Inventory(40);
-        Inventory worldInventory = new Inventory(400);
+        Application.launch(args);
+    }
 
-        System.out.println("Printando inventario:");
-        playerInventory.printInventory();
+    public void start(Stage stage) {
+        // StoneFX stone = new StoneFX();
+        ImageView imageView = new ImageView(new Image("stone.png"));
+        Button b1 = new Button("me ajuda");
 
-        Block stone1 = new Stone();
-        Block gravel1 = new Gravel();
+        BorderPane bPane = new BorderPane();
+        bPane.setCenter(imageView);
+        bPane.setRight(b1);
 
-        Tool pick1 = new WoodenPickaxe();
-        Tool axe1 = new WoodenAxe();
-
-        playerInventory.addEntities(Controller.getEntities((gravel1.breakBlock(pick1))));
-
-        System.out.println("Printando inventario:");
-        playerInventory.printInventory();
+        stage.setScene(new Scene(bPane, 800, 400));
+        stage.show();
     }
 }

@@ -45,7 +45,7 @@ class Wood extends Block {
     }
 
     public void setBlastResistance() {
-        this.blastResistance = 10;
+        this.blastResistance = 15;
     }
 
     public void setToolType() {
