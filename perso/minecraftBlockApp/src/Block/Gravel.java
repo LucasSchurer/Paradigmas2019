@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import javafx.scene.image.Image;
+
 class Gravel extends Block {
     private int id;
     private String name;
@@ -15,6 +17,9 @@ class Gravel extends Block {
     private ArrayList<Integer> drops;
     private double hardness;
 
+    // Graphics, using JavaFX
+    private Image sprite;
+
     Gravel() {
         setId();
         setName();
@@ -27,6 +32,10 @@ class Gravel extends Block {
         setFlammable();
         setDrops();
         setHardness();
+
+        // Graphics
+
+        setImage();
     }
 
     public void setId() {
@@ -128,5 +137,13 @@ class Gravel extends Block {
 
     public ArrayList<Integer> breakBlock(Tool tool) {
         return this.getDrops();
+    }
+
+    public void setImage() {
+        this.sprite = new Image("file:../img/3d/stone.png");
+    }
+
+    public Image getImage() {
+        return this.sprite;
     }
 }

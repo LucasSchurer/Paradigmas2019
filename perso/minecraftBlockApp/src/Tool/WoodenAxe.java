@@ -1,3 +1,5 @@
+import javafx.scene.image.Image;
+
 class WoodenAxe extends Tool {
     private int id;
     private String name;
@@ -9,6 +11,9 @@ class WoodenAxe extends Tool {
     private int stackable;
     private int damage;
 
+    // Graphics, using JavaFX
+    private Image sprite;
+
     WoodenAxe() {
         setId();
         setName();
@@ -18,6 +23,10 @@ class WoodenAxe extends Tool {
         setDurability();
         setRenewable();
         setDamage();
+
+        // Graphics
+
+        setImage();
     }
 
     public void setId() {
@@ -94,5 +103,13 @@ class WoodenAxe extends Tool {
 
     public void rightClick() {
 
+    }
+
+    public void setImage() {
+        this.sprite = new Image("file:../img/2d/wooden_axe.png");
+    }
+
+    public Image getImage() {
+        return this.sprite;
     }
 }

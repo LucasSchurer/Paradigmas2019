@@ -1,3 +1,5 @@
+import javafx.scene.image.Image;
+
 class ToolExample extends Tool {
     private int id;
     private String name;
@@ -9,6 +11,9 @@ class ToolExample extends Tool {
     private int stackable;
     private int damage;
 
+    // Graphics, using JavaFX
+    private Image sprite;
+
     ToolExample() {
         setId();
         setName();
@@ -18,6 +23,10 @@ class ToolExample extends Tool {
         setDurability();
         setRenewable();
         setDamage();
+
+        // Graphics
+
+        setImage();
     }
 
     public void setId() {
@@ -94,5 +103,13 @@ class ToolExample extends Tool {
 
     public void rightClick() {
 
+    }
+
+    public void setImage() {
+        this.sprite = new Image("file:../img/3d/stone.png");
+    }
+
+    public Image getImage() {
+        return this.sprite;
     }
 }

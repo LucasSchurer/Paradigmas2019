@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javafx.scene.image.Image;
+
 class Sand extends Block {
     private int id;
     private String name;
@@ -14,6 +16,9 @@ class Sand extends Block {
     private ArrayList<Integer> drops;
     private double hardness;
 
+    // Graphics, using JavaFX
+    private Image sprite;
+
     Sand() {
         setId();
         setName();
@@ -26,6 +31,10 @@ class Sand extends Block {
         setFlammable();
         setDrops();
         setHardness();
+
+        // Graphics
+
+        setImage();
     }
 
     public void setId() {
@@ -118,5 +127,13 @@ class Sand extends Block {
 
     public ArrayList<Integer> breakBlock(Tool tool) {
         return this.getDrops();
+    }
+
+    public void setImage() {
+        this.sprite = new Image("file:../img/3d/stone.png");
+    }
+
+    public Image getImage() {
+        return this.sprite;
     }
 }

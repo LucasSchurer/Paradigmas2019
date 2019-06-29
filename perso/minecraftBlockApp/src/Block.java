@@ -1,7 +1,8 @@
 import java.util.ArrayList;
 import javafx.util.Pair;
+import javafx.scene.image.Image;
 
-abstract class Block extends Entity {
+abstract class Block extends Entity implements BlockGraphics {
 
     abstract public void setTransparency();
 

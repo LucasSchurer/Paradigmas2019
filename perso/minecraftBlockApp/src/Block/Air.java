@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javafx.scene.image.Image;
+
 class Air extends Block {
     private int id;
     private String name;
@@ -14,6 +16,9 @@ class Air extends Block {
     private ArrayList<Integer> drops;
     private double hardness;
 
+    // Graphics, using JavaFX
+    private Image sprite;
+
     Air() {
         setId();
         setName();
@@ -26,6 +31,10 @@ class Air extends Block {
         setFlammable();
         setDrops();
         setHardness();
+
+        // Graphics
+
+        setImage();
     }
 
     public void setId() {
@@ -65,7 +74,7 @@ class Air extends Block {
     }
 
     public void setDrops() {
-        this.drops = new ArrayList<Integer>();
+        this.drops = null;
     }
 
     public void setHardness() {
@@ -117,6 +126,14 @@ class Air extends Block {
     }
 
     public ArrayList<Integer> breakBlock(Tool tool) {
-        return null;
+        return getDrops();
+    }
+
+    public void setImage() {
+        this.sprite = new Image("file:../img/3d/stone.png");
+    }
+
+    public Image getImage() {
+        return this.sprite;
     }
 }

@@ -1,3 +1,5 @@
+import javafx.scene.image.Image;
+
 class WoodenPickaxe extends Tool {
     private int id;
     private String name;
@@ -9,6 +11,9 @@ class WoodenPickaxe extends Tool {
     private int stackable;
     private int damage;
 
+    // Graphics, using JavaFX
+    private Image sprite;
+
     WoodenPickaxe() {
         setId();
         setName();
@@ -18,6 +23,10 @@ class WoodenPickaxe extends Tool {
         setDurability();
         setRenewable();
         setDamage();
+
+        // Graphics
+
+        setImage();
     }
 
     public void setId() {
@@ -94,5 +103,13 @@ class WoodenPickaxe extends Tool {
 
     public void rightClick() {
 
+    }
+
+    public void setImage() {
+        this.sprite = new Image("file:../img/2d/wooden_pickaxe.png");
+    }
+
+    public Image getImage() {
+        return this.sprite;
     }
 }

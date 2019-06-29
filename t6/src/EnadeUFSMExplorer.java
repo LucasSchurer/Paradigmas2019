@@ -8,10 +8,9 @@ class EnadeUFSMExplorer {
 
             System.out.println("Colunas: " + csvHandler.getColumns());
 
-            ArrayList<String> data = csvHandler.getCSVData();
-
             System.out.println("\n\n");
-            CourseData courseData = new CourseData(data.get(1));
+
+            csvHandler.printCSVData();
 
         } catch (IOException e) {
             return;

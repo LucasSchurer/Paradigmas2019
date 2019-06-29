@@ -1,4 +1,4 @@
-abstract class Tool extends Entity {
+abstract class Tool extends Entity implements ToolGraphics {
     abstract public void setType();
 
     abstract public void setRarity();
