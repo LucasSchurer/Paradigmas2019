@@ -1,6 +1,9 @@
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+
 import javafx.application.Application;
 
 import javafx.scene.Scene;
@@ -220,27 +223,28 @@ public class EnadeUFSMExplorer extends Application {
         table.getColumns().addAll(firstCol, secondCol, thirdCol, fourthCol, fifthCol, sixthCol, seventhCol, eighthCol,
                 ninthCol);
 
-        Button btnInfo = new Button("Informações sobre a questão.");
-        btnInfo.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-                DataEntry selectedItem = (DataEntry) table.getSelectionModel().getSelectedItem();
-                CourseData element = selectedItem.getCourseData();
+        table.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+                if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
+                    DataEntry selectedItem = (DataEntry) table.getSelectionModel().getSelectedItem();
+                    CourseData element = selectedItem.getCourseData();
 
-                Label lbl = new Label(element.toString());
+                    Label lbl = new Label(element.toString());
 
-                Stage infoQuestionStage = new Stage();
-                infoQuestionStage.initModality(Modality.APPLICATION_MODAL);
+                    Stage infoQuestionStage = new Stage();
+                    infoQuestionStage.initModality(Modality.APPLICATION_MODAL);
 
-                VBox infoQuestionScene = new VBox();
-                infoQuestionScene.getChildren().addAll(lbl);
+                    VBox infoQuestionScene = new VBox();
+                    infoQuestionScene.getChildren().addAll(lbl);
 
-                infoQuestionStage.setScene(new Scene(infoQuestionScene, 400, 600));
-                infoQuestionStage.show();
+                    infoQuestionStage.setScene(new Scene(infoQuestionScene, 400, 600));
+                    infoQuestionStage.show();
+                }
             }
         });
 
         VBox vbox = new VBox();
-        vbox.getChildren().addAll(table, btnInfo);
+        vbox.getChildren().addAll(table);
 
         stage.setScene(new Scene(vbox, 800, 600));
         stage.show();
