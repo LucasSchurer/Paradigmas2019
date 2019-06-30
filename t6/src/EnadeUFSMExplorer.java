@@ -8,11 +8,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -22,6 +23,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class EnadeUFSMExplorer extends Application {
 
     public class DataEntry {
+        private CourseData element;
         private SimpleStringProperty first;
         private SimpleStringProperty second;
         private SimpleStringProperty third;
@@ -32,7 +34,8 @@ public class EnadeUFSMExplorer extends Application {
         private SimpleStringProperty eighth;
         private SimpleStringProperty ninth;
 
-        private DataEntry(String a, String b, String c, String d, String e, String f, String g, String h, String i) {
+        private DataEntry(String a, String b, String c, String d, String e, String f, String g, String h, String i,
+                CourseData element) {
             this.first = new SimpleStringProperty(a);
             this.second = new SimpleStringProperty(b);
             this.third = new SimpleStringProperty(c);
@@ -42,6 +45,16 @@ public class EnadeUFSMExplorer extends Application {
             this.seventh = new SimpleStringProperty(g);
             this.eighth = new SimpleStringProperty(h);
             this.ninth = new SimpleStringProperty(i);
+
+            setCourseData(element);
+        }
+
+        public void setCourseData(CourseData element) {
+            this.element = element;
+        }
+
+        public CourseData getCourseData() {
+            return this.element;
         }
 
         public SimpleStringProperty firstProperty() {
@@ -153,20 +166,18 @@ public class EnadeUFSMExplorer extends Application {
         }
     }
 
-    private final ObservableList<DataEntry> data = FXCollections
-            .observableArrayList(new DataEntry("-", "-", "-", "-", "-", "-", "-", "-", "-"));
+    private final ObservableList<DataEntry> data = FXCollections.observableArrayList();
 
     private void setData() {
         try {
             CSVFileHandler csvHandler = new CSVFileHandler("enade1.csv");
-            this.data.remove(0);
 
             for (int i = 1; i < csvHandler.getCSVData().size(); i++) {
                 CourseData element = new CourseData(csvHandler.getCSVData().get(i));
                 this.data.add(new DataEntry(element.getYear(), element.getTest(), element.getQuestionType(),
                         element.getQuestionID(), element.getObject(), element.getCourseSuccesses(),
                         element.getRegionSuccesses(), element.getCountrySuccesses(),
-                        element.getCountryCourseSuccessesDifference()));
+                        element.getCountryCourseSuccessesDifference(), element));
             }
 
         } catch (IOException e) {
@@ -209,10 +220,29 @@ public class EnadeUFSMExplorer extends Application {
         table.getColumns().addAll(firstCol, secondCol, thirdCol, fourthCol, fifthCol, sixthCol, seventhCol, eighthCol,
                 ninthCol);
 
-        VBox vbox = new VBox();
-        vbox.getChildren().addAll(table);
+        Button btnInfo = new Button("Informações sobre a questão.");
+        btnInfo.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                DataEntry selectedItem = (DataEntry) table.getSelectionModel().getSelectedItem();
+                CourseData element = selectedItem.getCourseData();
 
-        stage.setScene(new Scene(vbox, 800, 400));
+                Label lbl = new Label(element.toString());
+
+                Stage infoQuestionStage = new Stage();
+                infoQuestionStage.initModality(Modality.APPLICATION_MODAL);
+
+                VBox infoQuestionScene = new VBox();
+                infoQuestionScene.getChildren().addAll(lbl);
+
+                infoQuestionStage.setScene(new Scene(infoQuestionScene, 400, 600));
+                infoQuestionStage.show();
+            }
+        });
+
+        VBox vbox = new VBox();
+        vbox.getChildren().addAll(table, btnInfo);
+
+        stage.setScene(new Scene(vbox, 800, 600));
         stage.show();
     }
 }
