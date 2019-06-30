@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -5,13 +6,16 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 import javafx.application.Application;
-
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 
 import javafx.event.ActionEvent;
@@ -24,6 +28,8 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class EnadeUFSMExplorer extends Application {
+
+    private String url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTO06Jdr3J1kPYoTPRkdUaq8XuslvSD5--FPMht-ilVBT1gExJXDPTiX0P3FsrxV5VKUZJrIUtH1wvN/pub?gid=0&single=true&output=csv";
 
     public class DataEntry {
         private CourseData element;
@@ -173,7 +179,13 @@ public class EnadeUFSMExplorer extends Application {
 
     private void setData() {
         try {
-            CSVFileHandler csvHandler = new CSVFileHandler("enade1.csv");
+            CSVFileHandler csvHandler;
+
+            try {
+                csvHandler = new CSVFileHandler("enade.csv", url);
+            } catch (IOException e) {
+                csvHandler = new CSVFileHandler("enade.csv", url);
+            }
 
             for (int i = 1; i < csvHandler.getCSVData().size(); i++) {
                 CourseData element = new CourseData(csvHandler.getCSVData().get(i));
@@ -186,6 +198,10 @@ public class EnadeUFSMExplorer extends Application {
         } catch (IOException e) {
             return;
         }
+    }
+
+    public void setURL(String url) {
+        this.url = url;
     }
 
     public static void main(String[] args) {
@@ -243,8 +259,74 @@ public class EnadeUFSMExplorer extends Application {
             }
         });
 
+        // Criação da MenuBar
+        // File -> Reload
+        MenuItem menuItemReload = new MenuItem("Reload");
+        menuItemReload.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+
+                File file = new File("enade.csv");
+                file.delete();
+                data.clear();
+                setData();
+
+                System.out.println(data.get(2).element.toString());
+            }
+        });
+
+        // File -> Source
+        MenuItem menuItemSource = new MenuItem("Source");
+        menuItemSource.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                TextField txtField = new TextField();
+                Button changeButton = new Button("Change URL");
+                changeButton.setOnAction(new EventHandler<ActionEvent>() {
+                    public void handle(ActionEvent event) {
+                        setURL(txtField.getText());
+                    }
+                });
+
+                VBox vbox = new VBox();
+                Stage stage = new Stage();
+
+                vbox.getChildren().addAll(txtField, changeButton);
+                stage.setScene(new Scene(vbox, 300, 100));
+                stage.show();
+            }
+        });
+
+        // File -> Exit
+        MenuItem menuItemExit = new MenuItem("Exit");
+        menuItemExit.setOnAction(e -> Platform.exit());
+
+        // Help -> About
+        MenuItem menuItemAbout = new MenuItem("About");
+        menuItemAbout.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                Label aboutLbl = new Label("Enade UFSM Explorer\nAuthor: Lucas Schurer");
+                VBox vbox = new VBox();
+                Stage stage = new Stage();
+
+                vbox.getChildren().add(aboutLbl);
+                stage.setScene(new Scene(vbox, 300, 100));
+                stage.show();
+            }
+        });
+
+        // File
+        Menu menuFile = new Menu("File");
+        menuFile.getItems().addAll(menuItemReload, menuItemSource, menuItemExit);
+
+        // Help
+        Menu menuHelp = new Menu("Help");
+        menuHelp.getItems().add(menuItemAbout);
+
+        // Finalização da MenuBar
+        MenuBar menuBar = new MenuBar();
+        menuBar.getMenus().addAll(menuFile, menuHelp);
+
         VBox vbox = new VBox();
-        vbox.getChildren().addAll(table);
+        vbox.getChildren().addAll(menuBar, table);
 
         stage.setScene(new Scene(vbox, 800, 600));
         stage.show();

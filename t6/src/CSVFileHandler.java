@@ -1,12 +1,23 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 class CSVFileHandler {
     private ArrayList<String> csvData;
 
-    private ArrayList<String> getDataFromFile(String fileName) {
+    private static void download(String url, String fileName) throws IOException {
+        try (InputStream in = URI.create(url).toURL().openStream()) {
+            Files.copy(in, Paths.get(fileName));
+        }
+    }
+
+    private ArrayList<String> getDataFromFile(String fileName, String url, int nTry) {
         ArrayList<String> data = new ArrayList<String>();
 
         // Realiza a abertura do arquivo.
@@ -37,13 +48,21 @@ class CSVFileHandler {
         } catch (IOException e) {
             // Caso o arquivo não exista ou não possa ser aberto,
             // retorna uma mensagem de erro e define o valor do ArrayList para nulo.
-            System.out.println("Error while opening the file. Please, check if the \"" + fileName + "\" exists.");
+            System.out.println("Error while opening the file. Please, check if the \"" + fileName
+                    + "\" exists. Trying to download a new one...");
+
+            try {
+                download(url, fileName);
+            } catch (IOException e1) {
+                System.out.println("Error while downloading the file.");
+            }
+
             return null;
         }
     }
 
-    CSVFileHandler(String fileName) throws IOException {
-        setCSVData(getDataFromFile(fileName));
+    CSVFileHandler(String fileName, String url) throws IOException {
+        setCSVData(getDataFromFile(fileName, url, 0));
 
         if (this.csvData == null) {
             throw new IOException();
