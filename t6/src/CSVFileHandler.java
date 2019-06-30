@@ -11,7 +11,7 @@ import java.util.ArrayList;
 class CSVFileHandler {
     private ArrayList<String> csvData;
 
-    private static void download(String url, String fileName) throws IOException {
+    public static void download(String url, String fileName) throws IOException {
         try (InputStream in = URI.create(url).toURL().openStream()) {
             Files.copy(in, Paths.get(fileName));
         }

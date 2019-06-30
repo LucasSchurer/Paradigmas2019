@@ -8,7 +8,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Button;
@@ -26,6 +28,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class EnadeUFSMExplorer extends Application {
 
@@ -242,18 +246,40 @@ public class EnadeUFSMExplorer extends Application {
         table.setOnMouseClicked(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                 if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
+
                     DataEntry selectedItem = (DataEntry) table.getSelectionModel().getSelectedItem();
                     CourseData element = selectedItem.getCourseData();
-
-                    Label lbl = new Label(element.toString());
 
                     Stage infoQuestionStage = new Stage();
                     infoQuestionStage.initModality(Modality.APPLICATION_MODAL);
 
                     VBox infoQuestionScene = new VBox();
-                    infoQuestionScene.getChildren().addAll(lbl);
 
-                    infoQuestionStage.setScene(new Scene(infoQuestionScene, 400, 600));
+                    Text txt = new Text(element.toString());
+                    txt.setWrappingWidth(600);
+
+                    infoQuestionScene.getChildren().add(txt);
+
+                    if (!element.getImage().equals("---")) {
+                        try {
+                            File fImage = new File("image.jpg");
+                            fImage.delete();
+
+                            CSVFileHandler.download(element.getImage(), "image.jpg");
+
+                            ImageView image = new ImageView(new Image("image.jpg", 100, 200, false, false));
+
+                            image.fitWidthProperty().bind(infoQuestionScene.widthProperty());
+                            // image.fitHeightProperty().bind(infoQuestionScene.heightProperty());
+
+                            infoQuestionScene.getChildren().add(image);
+
+                        } catch (IOException e) {
+                            System.out.println("Unable to download image.");
+                        }
+                    }
+
+                    infoQuestionStage.setScene(new Scene(infoQuestionScene, 600, 650));
                     infoQuestionStage.show();
                 }
             }
