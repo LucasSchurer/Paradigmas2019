@@ -326,9 +326,6 @@ public class Controller implements Initializable {
     @FXML
     void changeSelectedStone(ActionEvent event) {
         changeSelectedBlock(new Stone());
-
-        Image image = new Image("file:Gravel.png");
-        this.selectedBlockImage.setImage(image);
     }
 
     @FXML
