@@ -1,0 +1,25 @@
+package entity.block.nonsolid;
+
+import java.util.ArrayList;
+import entity.*;
+
+class BlockExample extends Block {
+
+    BlockExample() {
+        setId();
+        setName();
+        setTransparency();
+        setLuminancy();
+        setBlastResistance();
+        setToolType();
+        setRenewable();
+        setStackable();
+        setFlammable();
+        setDrops();
+        setHardness();
+    }
+
+    public ArrayList<Integer> breakBlock(Tool tool) {
+        return getDrops();
+    }
+}

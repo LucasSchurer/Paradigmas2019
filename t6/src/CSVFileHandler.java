@@ -86,5 +86,4 @@ class CSVFileHandler {
     public String getColumns() {
         return this.csvData.get(0);
     }
-
 }

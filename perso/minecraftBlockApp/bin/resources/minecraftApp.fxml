@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane fx:id="primaryStage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+   <children>
+      <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="540.0" layoutY="160.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@img/Bedrock.png" />
+         </image>
+      </ImageView>
+      <VBox fx:id="infoBlockScene" alignment="BOTTOM_LEFT" focusTraversable="true" layoutX="151.0" layoutY="29.0" prefHeight="339.0" prefWidth="335.0" visible="false">
+         <children>
+            <TableView fx:id="infoBlockTable" prefHeight="336.0" prefWidth="335.0">
+              <columns>
+                <TableColumn fx:id="colField" editable="false" minWidth="0.0" prefWidth="166.0" sortable="false" />
+                  <TableColumn fx:id="colValue" editable="false" minWidth="0.0" prefWidth="153.0" sortable="false" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
+      <ScrollPane fx:id="selectBlockScene" layoutX="116.0" layoutY="29.0" prefHeight="527.0" prefWidth="366.0">
+         <content>
+            <TilePane hgap="20.0" prefHeight="494.0" prefTileHeight="50.0" prefTileWidth="50.0" prefWidth="362.0" tileAlignment="BOTTOM_LEFT" vgap="20.0">
+               <children>
+                  <Button fx:id="btnStone" mnemonicParsing="false" onAction="#changeSelectedStone" prefHeight="142.0" prefWidth="186.0">
+                     <graphic>
+                        <ImageView fx:id="imgStone" fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/Stone.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnGrass" mnemonicParsing="false" onAction="#changeSelectedGrass" prefHeight="142.0" prefWidth="186.0">
+                     <graphic>
+                        <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/Grass.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnDirt" layoutX="20.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeSelectedDirt" prefHeight="142.0" prefWidth="186.0">
+                     <graphic>
+                        <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/Dirt.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnCobblestone" layoutX="20.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeSelectedCobblestone" prefHeight="142.0" prefWidth="186.0">
+                     <graphic>
+                        <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/Cobblestone.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnWood" layoutX="230.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeSelectedWood" prefHeight="142.0" prefWidth="186.0">
+                     <graphic>
+                        <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/Wood.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </TilePane>
+         </content>
+      </ScrollPane>
+      <ScrollPane fx:id="selectToolScene" hbarPolicy="NEVER" layoutX="799.0" layoutY="29.0" prefHeight="527.0" prefWidth="366.0">
+         <content>
+            <TilePane hgap="20.0" prefHeight="521.0" prefTileHeight="50.0" prefTileWidth="50.0" prefWidth="368.0" tileAlignment="BOTTOM_LEFT" vgap="20.0">
+               <children>
+                  <Button fx:id="btnWoodenPickaxe" mnemonicParsing="false" onAction="#changeSelectedWoodenPickaxe" prefHeight="142.0" prefWidth="186.0">
+                     <graphic>
+                        <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/WoodenPickaxe.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnStonePickaxe" mnemonicParsing="false" onAction="#changeSelectedStonePickaxe" prefHeight="142.0" prefWidth="186.0">
+                     <graphic>
+                        <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/StonePickaxe.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnIronPickaxe" layoutX="20.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeSelectedIronPickaxe" prefHeight="142.0" prefWidth="186.0">
+                     <graphic>
+                        <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/IronPickaxe.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnGoldenPickaxe" layoutX="20.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeSelectedGoldenPickaxe" prefHeight="142.0" prefWidth="186.0">
+                     <graphic>
+                        <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/GoldenPickaxe.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnDiamondPickaxe" layoutX="230.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeSelectedDiamondPickaxe" prefHeight="142.0" prefWidth="186.0">
+                     <graphic>
+                        <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/DiamondPickaxe.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnWoodenAxe" layoutX="20.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeSelectedWoodenAxe" prefHeight="142.0" prefWidth="186.0">
+                     <graphic>
+                        <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/WoodenAxe.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnStoneAxe" layoutX="90.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeSelectedStoneAxe" prefHeight="142.0" prefWidth="186.0">
+                     <graphic>
+                        <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/StoneAxe.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnIronAxe" layoutX="160.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeSelectedIronAxe" prefHeight="142.0" prefWidth="186.0">
+                     <graphic>
+                        <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/IronAxe.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnGoldenAxe" layoutX="230.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeSelectedGoldenAxe" prefHeight="142.0" prefWidth="186.0">
+                     <graphic>
+                        <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/GoldenAxe.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnDiamondAxe" layoutX="300.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeSelectedDiamondAxe" prefHeight="142.0" prefWidth="186.0">
+                     <graphic>
+                        <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/DiamondAxe.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </TilePane>
+         </content>
+      </ScrollPane>
+      <Button fx:id="btnInfo" layoutX="30.0" layoutY="30.0" mnemonicParsing="false" onMouseClicked="#showInfoBlockScene" onMouseEntered="#showInfoMessage" prefHeight="60.0" prefWidth="60.0">
+         <graphic>
+            <ImageView fx:id="imgInfoIcon" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/BookQuill.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor>
+      </Button>
+      <Button fx:id="btnSelectBlock" layoutX="30.0" layoutY="300.0" mnemonicParsing="false" onAction="#showSelectBlockScene" onMouseEntered="#showSelectBlockMessage" onMouseExited="#hideSelectBlockMessage" prefHeight="60.0" prefWidth="60.0">
+         <graphic>
+            <ImageView fx:id="imgSelectBlockIcon" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true">
+               <image>
+                  <Image url="@img/Grass.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor>
+      </Button>
+      <Button fx:id="btnSelectTool" layoutX="1180.0" layoutY="30.0" mnemonicParsing="false" onAction="#showSelectToolScene" onMouseEntered="#showSelectToolMessage" onMouseExited="#hideSelectToolMessage" prefHeight="60.0" prefWidth="60.0">
+         <graphic>
+            <ImageView fx:id="imgSelectToolIcon" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/DiamondPickaxe.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor>
+      </Button>
+      <Label fx:id="infoMessage" layoutX="118.0" layoutY="46.0" prefHeight="36.0" prefWidth="261.0" text="Info about the selected block!" textFill="#403d3d" visible="false">
+         <font>
+            <Font name="Arial Bold Italic" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="selectBlockMessage" layoutX="118.0" layoutY="316.0" prefHeight="36.0" prefWidth="200.0" text="Select a different block" textFill="#403d3d" visible="false">
+         <font>
+            <Font name="Arial Bold Italic" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="selectToolMessage" layoutX="965.0" layoutY="46.0" prefHeight="36.0" prefWidth="200.0" text="Select a different tool" textFill="#403d3d" visible="false">
+         <font>
+            <Font name="Arial Bold Italic" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="selectedBlockLbl" layoutX="78.0" layoutY="612.0" prefHeight="30.0" prefWidth="419.0" text="Current Block:">
+         <font>
+            <Font name="Arial Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="selectedToolLbl" layoutX="78.0" layoutY="642.0" prefHeight="30.0" prefWidth="451.0" text="Current Tool:">
+         <font>
+            <Font name="Arial Bold" size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnBreak" layoutX="593.0" layoutY="535.0" mnemonicParsing="false" onAction="#breakSelectedBlock" text="Break">
+         <font>
+            <Font name="Arial" size="24.0" />
+         </font>
+      </Button>
+      <Label fx:id="dropsLbl" layoutX="799.0" layoutY="642.0" prefHeight="30.0" prefWidth="451.0" text="Drops:">
+         <font>
+            <Font name="Arial Bold" size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

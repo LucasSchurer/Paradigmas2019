@@ -577,5 +577,4 @@ class CourseData {
                 System.out.println(s + "\n");
         }
     }
-
 }

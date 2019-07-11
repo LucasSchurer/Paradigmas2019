@@ -1,0 +1,24 @@
+package entity.tool.axe;
+
+import java.util.ArrayList;
+import javafx.util.Pair;
+import entity.*;
+
+class ToolExample extends Tool {
+
+    ToolExample() {
+        setId();
+        setName();
+        setType();
+        setRarity();
+        setMaterial();
+        setDurability();
+        setDamage();
+        setRenewable();
+        setStackable();
+    }
+
+    public Pair<Block, Tool> rightClick(Block block) {
+        return new Pair<Block, Tool>(block, this);
+    }
+}
